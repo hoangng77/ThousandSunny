@@ -1,7 +1,7 @@
-# Welcome to ArtHub
+# Welcome to DreamCircle
 - Overview
   
-ArtHub is a platform inspired by sites like Bandcamp and Webtoons, designed to empower independent creators by making it easy to upload, manage, and share serialized content (comics, music, shows, etc.). At the same time, it provides consumers with an engaging and organized way to discover, save, and interact with content.
+DreamCircle is a platform inspired by sites like Bandcamp and Webtoons, designed to empower independent creators by making it easy to upload, manage, and share serialized comics and artworks. At the same time, it provides consumers with an engaging and organized way to discover, save, and interact with content.
 
 This project was developed as part of CEN3031 (Fall 2025, Section 21583) under the guidance of Lead TA: Mansi Pai. Team members include Hoang Nguyen, Dayrian Figueroa, and Daphne Calin. 
 
