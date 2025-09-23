@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
-import cors from "cors";
+import jwt from "jsonwebtoken";
+import validator from "validator";
 
 export const registerUser = async(req, res) => {
     try {
@@ -10,6 +11,9 @@ export const registerUser = async(req, res) => {
           return res.status(400).json({ message: "All fields are required" });
         }
     
+        if (!validator.isEmail(email)) {
+          return res.status(400).json({ message: "Invalid email format" });
+        }
         const existingUser = await User.findOne({ email });
         if (existingUser) {
           return res.status(400).json({ message: "Email already registered" });
