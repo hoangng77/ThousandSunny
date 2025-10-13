@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import validator from "validator";
 
 export const registerUser = async(req, res) => {
+    console.log("Running registerUser()");
     try {
         const { username, email, password, role } = req.body;
     
