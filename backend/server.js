@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import authRoutes from "./routes/auth.js";
+import authRoute from "./routes/auth.js";
+import artistRoute from "./routes/artist.js";
+import consumerRoute from "./routes/consumer.js";
 
 dotenv.config();
 const app = express();
@@ -13,7 +15,9 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use("/auth", authRoutes);
+app.use("/auth", authRoute);
+app.use("/artist", artistRoute);
+app.use("/consumer", consumerRoute);
 
 // DB connection
 mongoose
