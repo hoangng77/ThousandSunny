@@ -3,16 +3,19 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import authRoute from "./routes/auth.js";
-import artistRoute from "./routes/artist.js";
-import consumerRoute from "./routes/consumer.js";
+import authRoute from "./routes/authRoute.js";
+import artistRoute from "./routes/artistRoute.js";
+import consumerRoute from "./routes/consumerRoute.js";
 
 dotenv.config();
 const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true
+}));
 
 // Routes
 app.use("/auth", authRoute);
