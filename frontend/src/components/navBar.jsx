@@ -13,6 +13,7 @@ export default function Navbar() {
         <Link to="/">Home</Link>
         <Link to="/discover">Discover</Link>
         <Link to="/create">Create</Link>
+        
       </div>
 
       <div className="flex gap-3">

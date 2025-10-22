@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function Login() {
+
   const [input, setInput] = useState({ email: "", password: "" });
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
@@ -15,8 +16,13 @@ export default function Login() {
     setError(null);
 
     try {
-      await loginToAccount(input);
+      const data = await loginToAccount(input);
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("role", JSON.stringify(data.role));
       setStatus("success");
+
     } catch (err) {
       setStatus("typing");
       setError(err.message);
