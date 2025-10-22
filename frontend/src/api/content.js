@@ -5,3 +5,4 @@ export const updateMedia = (id, content) => API.put(`/artist/content/${id}`, con
 export const deleteMedia = (id) => API.delete(`/artist/content/${id}`);
 export const getPortfolio = (artist_id) => API.get(`/artist/portfolio/${artist_id}`);
 export const getDashboard = () => API.get("/artist/dashboard");
+export const getProfilePage = (username) => API.get(`/profilePage/${username}`);

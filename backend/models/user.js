@@ -5,6 +5,16 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['artist', 'consumer'], required: true },
+    profile: {
+        bio: String,
+        avatarUrl: String,
+        socialLinks: {
+            instagram: String,
+            twitter: String,
+            facebook: String,
+            website: String,
+        },
+    },
     passwordResetToken: String,
     passWordResetExpires: Date,
 }, { timestamps: true });
