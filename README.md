@@ -5,6 +5,16 @@ DreamCircle is a platform inspired by sites like Bandcamp and Webtoons, designed
 
 This project was developed as part of CEN3031 (Fall 2025, Section 21583) under the guidance of Lead TA: Mansi Pai. Team members include Hoang Nguyen, Dayrian Figueroa, and Daphne Calin. 
 
+Guide to setting up
+- Clone the project to a local folder
+- Checkout the branch you're working on
+- Go to backend, run npm init and npm install express
+- Run "node server.js" to start the backend. You might need to install mongodb on your machine
+- Go to frontend, run "npm run dev"
+ 
+
+
+
 - Features
   
 1. For artists
