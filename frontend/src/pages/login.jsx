@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/authProvider";
 
 export default function Login() {
 
   const [input, setInput] = useState({ email: "", password: "" });
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { login } = React.useContext(AuthContext);
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -18,8 +22,8 @@ export default function Login() {
     try {
       const data = await loginToAccount(input);
 
+      login(data.user);
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("role", JSON.stringify(data.role));
       setStatus("success");
 
@@ -29,7 +33,20 @@ export default function Login() {
     }
   };
 
-  if (status === "success") return <h1 className="text-center mt-20 text-2xl">Login Successful 🎉</h1>;
+  useEffect(() => {
+    if (status === "success") {
+      const timer = setTimeout(() => navigate("/dashboard"), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [status, navigate]);
+
+  if (status === "success") {
+    return (
+      <h1 className="text-center mt-20 text-2xl">
+        Login Successful 🎉 Redirecting...
+      </h1>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
