@@ -1,18 +1,15 @@
 import express from "express";
-import { addToLibrary, removeFromLibrary, changeVisibility } from "../controllers/consumerControllers/library.js";
+import { protect } from "../middleware/authentication.js";
+import { getLibrary, addToLibrary, removeFromLibrary } from "../controllers/consumerControllers/library.js";
+import { getFollowing, followArtist, unfollowArtist } from "../controllers/consumerControllers/following.js";
 
 const router = express.Router();
 
-// router.get("/search", searchMedia);
-router.post("/library/:contentId", addToLibrary);
-router.delete("/library/:contentId", removeFromLibrary);
-router.patch("/libary/:visibility", changeVisibility);
-// router.post("/progress/:contentId", updateProgress);
-// router.post("/comments/:contentId", postComment);
-// router.put("/comments/:contentId", editComment);
-// router.delete("/comments/:contentId", deleteComment);
-// router.post("/follow/:artistId", followArtist);
-// router.put("/follow/:artistId", unfollowArtist);
-// router.delete("/follow/:artistId", deleteFollow);
+router.get("/library", protect, getLibrary);
+router.post("/library", protect, addToLibrary);
+router.delete("/library/:contentId", protect, removeFromLibrary);
+router.get("/following", protect, getFollowing);
+router.post("/following", protect, followArtist);
+router.delete("/following/:artistId", protect, unfollowArtist);
 
 export default router;

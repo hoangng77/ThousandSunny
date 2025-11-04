@@ -86,12 +86,12 @@ export default function Register() {
             <input
               type="radio"
               name="role"
-              value="reader"
-              checked={input.role === "reader"}
+              value="consumer"
+              checked={input.role === "consumer"}
               onChange={handleChange}
               className="accent-indigo-600"
             />
-            Reader
+            Consumer
           </label>
         </div>
 

@@ -3,38 +3,37 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import authRoute from "./routes/authRoute.js";
-import artistRoute from "./routes/artistRoute.js";
-import consumerRoute from "./routes/consumerRoute.js";
+// Routes
+import authRoutes from "./routes/authRoute.js";
+import profileRoutes from "./routes/profileRoute.js";
+import artistRoutes from "./routes/artistRoute.js";
+import consumerRoutes from "./routes/consumerRoute.js";
+import discoverRoutes from "./routes/discoverRoute.js";
 
 dotenv.config();
 const app = express();
-
-// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true
-}));
+
+// Connect MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error(err));
 
 // Routes
-app.use("/auth", authRoute);
-app.use("/artist", artistRoute);
-app.use("/consumer", consumerRoute);
+app.use("/auth", authRoutes);
+app.use("/profile", profileRoutes);
+app.use("/artist", artistRoutes);
+app.use("/consumer", consumerRoutes);
+app.use("/discover", discoverRoutes);
 
-// DB connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB error:", err));
-
-// Root
-app.get("/", (req, res) => {
-  res.send("API is running");
+// Error handling
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

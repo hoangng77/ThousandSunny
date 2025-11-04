@@ -28,16 +28,16 @@ export const resetPassword = async (req, res) => {
 
     try {
         const user = await User.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }
+            passwordResetToken: token,
+            passwordResetExpires: { $gt: Date.now() }
         });
         if (!user) {
             return res.status(400).json({message: "Invalid or expired token"});
         }
 
         user.password = newPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
 
         await user.save();
 

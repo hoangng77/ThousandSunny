@@ -1,17 +1,78 @@
-import React from "react";
-import Hero from "../components/hero";
-import Card from "../components/card";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/authProvider"; 
 
 export default function Dashboard() {
+  const { user } = useContext(AuthContext);
+
+  if (!user) return <div className="p-8">Loading...</div>;
 
   return (
-    <div className="flex flex-col flex-1 h-screen bg-gray-50">
-      <main className="flex-1 px-6 py-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800"></h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <a href="/ProfileSettings"><Card key={"Profile Settings"} image={"/images/hi"} title={"Profile Settings"} /></a>
-        </div>
-      </main>
+    <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {user.role === "artist" ? (
+        <>
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Portfolio</h2>
+            <p className="text-gray-600">Manage your portfolio and artworks.</p>
+            <Link to="/portfolio" className="text-indigo-600 mt-3 inline-block">
+              Go →
+            </Link>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Upload Media</h2>
+            <p className="text-gray-600">
+              Add new artwork or serialized content.
+            </p>
+            <Link to="/upload" className="text-indigo-600 mt-3 inline-block">
+              Upload →
+            </Link>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Progress</h2>
+            <p className="text-gray-600">
+              Track the progress of your serialized content.
+            </p>
+            <Link to="/progress" className="text-indigo-600 mt-3 inline-block">
+              Go →
+            </Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Profile</h2>
+            <p className="text-gray-600">Edit bio, avatar, and details.</p>
+            <Link
+              to={`/profile/${user.username}`}
+              className="text-indigo-600 mt-3 inline-block"
+            >
+              Go →
+            </Link>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Library</h2>
+            <p className="text-gray-600">
+              Your saved media and favorite artworks.
+            </p>
+            <Link to="/library" className="text-indigo-600 mt-3 inline-block">
+              Go →
+            </Link>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Following</h2>
+            <p className="text-gray-600">
+              Track the artists you are following.
+            </p>
+            <Link to="/following" className="text-indigo-600 mt-3 inline-block">
+              Go →
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 }
