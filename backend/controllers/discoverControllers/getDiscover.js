@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 export const getDiscover = async (req, res) => {
   try {
     // 1. Load user safely
-    const user = await User.findById(req.user.id).populate("library.content");
+    const user = await User.findById(req.user._id).populate("library.content");
 
     const role = user.role;
 
@@ -86,7 +86,7 @@ export const getDiscover = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("❌ DISCOVER ERROR:", err);
+    console.error("DISCOVER ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

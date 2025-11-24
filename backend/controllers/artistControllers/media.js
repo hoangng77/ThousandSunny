@@ -12,7 +12,7 @@ export const uploadMedia = async (req, res) => {
         }
 
         const media = new Content({
-            artist: req.user.id,
+            artist: req.user._id,
             title,
             description,
             genre,
@@ -43,7 +43,7 @@ export const uploadSerializedContent = async (req, res) => {
         }
 
         const media = new Content({
-            artist: req.user.id,
+            artist: req.user._id,
             title,
             description,
             genre,
@@ -65,7 +65,7 @@ export const uploadSerializedContent = async (req, res) => {
 
 export const getProgress = async (req, res) => {
   try {
-    const artistId = req.user.id;
+    const artistId = req.user._id;
 
     const allContent = await Content.find({ artist: artistId }).lean();
 
@@ -112,11 +112,11 @@ export const getProgress = async (req, res) => {
 
 export const updateMedia = async (req, res) => {
     try {
-        const media = await Content.findById(req.params.id);
+        const media = await Content.findById(req.params._id);
         if (!media) {
             return res.status(404).json({message: "Media not found"});
         }
-        if (media.artist.toString() !== req.user.id) {
+        if (media.artist.toString() !== req.user._id) {
             return res.status(403).json({message: "Unauthorized"});
         }
         const updates = req.body;
@@ -130,11 +130,11 @@ export const updateMedia = async (req, res) => {
 
 export const deleteMedia = async (req, res) => {
     try {
-        const media = await Content.findById(req.params.id);
+        const media = await Content.findById(req.params._id);
         if (!media) {
             return res.status(404).json({message: "Media not found"});
         }
-        if (media.artist.toString() !== req.user.id) {
+        if (media.artist.toString() !== req.user._id) {
             return res.status(403).json({message: "Unauthorized"});
         }
         await media.deleteOne();

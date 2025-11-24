@@ -3,7 +3,7 @@ import Content from "../../models/content.js";
 
 export const getLibrary = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user._id)
       .populate("library.content");
 
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -18,7 +18,7 @@ export const addToLibrary = async (req, res) => {
   try {
     const { contentId } = req.body;
 
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     const content = await Content.findById(contentId);
 
     if (!content) return res.status(404).json({ message: "Content not found" });

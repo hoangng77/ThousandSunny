@@ -2,7 +2,7 @@ import User from "../../models/user.js";
 
 export const getFollowing = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user._id)
       .populate("following", "username profile avatarUrl");
 
     if (!user) return res.status(404).json({ message: "User not found" });
