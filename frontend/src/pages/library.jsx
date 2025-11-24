@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getLibrary } from "../route/consumer";
 
 export default function Library() {
   const [library, setLibrary] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -15,7 +14,7 @@ export default function Library() {
         const data = res.data;
         if (!cancelled) setLibrary(data.library || []);
       } catch (err) {
-        if (!cancelled) setError(err.message || "Unknown error");
+        if (!cancelled) console.log(err.message? err.message : "Error loading library");
       } finally {
         if (!cancelled) setLoading(false);
       }

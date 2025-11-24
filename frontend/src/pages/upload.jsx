@@ -65,8 +65,8 @@ export default function Upload() {
               value="single" 
               checked={contentType === "single"} 
               onChange={(e) => setContentType(e.target.value)} 
-            />
-            Single Media
+            />{/*
+            */}Single Media
           </label>
 
           <label className="flex items-center gap-2">
@@ -75,8 +75,8 @@ export default function Upload() {
               value="series" 
               checked={contentType === "series"} 
               onChange={(e) => setContentType(e.target.value)} 
-            />
-            Serialized Content
+            />{/*
+            */}Serialized Content
           </label>
         </div>
 
@@ -86,7 +86,7 @@ export default function Upload() {
         {/* Description */}
         <input className="border p-2 rounded" type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
 
-        {/* ⭐ GENRE SELECTOR (dropdown) */}
+        {/* GENRE SELECTOR (dropdown) */}
         <select
           className="border p-2 rounded"
           value={genre}
