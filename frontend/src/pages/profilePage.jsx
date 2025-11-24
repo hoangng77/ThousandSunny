@@ -1,83 +1,95 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { getProfile } from "../route/profile";
+import { Card } from "../components/card";
 
 export default function ProfilePage() {
   const { username } = useParams();
+
   const [user, setUser] = useState(null);
-  const [isEditingBio, setIsEditingBio] = useState(false);
-  const [bioDraft, setBioDraft] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    if (!username) {
+      setNotFound(true);
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function fetchProfile() {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/profilePage/${username}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        setUser(data.profile);
-        setBioDraft(data.profile.profile?.bio || "");
+        const res = await getProfile(username);
+
+        if (res.status === 404) {
+          if (!cancelled) setNotFound(true);
+          return;
+        }
+
+        const data = res.data;
+        const u = data.user;   
+
+        if (!cancelled) {
+          setUser({
+            name: u.username,
+            profilePicture: u.profile?.avatarUrl || "",
+            bio: u.profile?.bio || "Hello! This is my profile.",
+            featuredArtworks: u.featuredArtworks || [],
+            raw: data,
+          });
+        }
+
       } catch (err) {
-        console.error(err);
+        if (!cancelled) setError(err.message || "Unknown error");
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-    };
+    }
+
     fetchProfile();
+
+    return () => {
+      cancelled = true;
+    };
   }, [username]);
 
-  const handleBioSave = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/profilePage/${username}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ bio: bioDraft }),
-      });
-      const data = await res.json();
-      if (res.ok) setUser({ ...user, profile: { ...user.profile, bio: bioDraft } });
-      setIsEditingBio(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  if (!user) return <div className="p-8 text-center">Loading...</div>;
+  if (loading) return <div className="text-center mt-20">Loading profile…</div>;
+  if (error) return <div className="text-center mt-20 text-red-600">Error: {error}</div>;
+  if (notFound || !user)
+    return <h1 className="text-center mt-20 text-2xl text-red-600">Profile Not Found</h1>;
 
   return (
-    <div className="h-screen w-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-6">
-        <div className="flex items-center gap-6">
+    <div className="flex flex-col flex-1 min-h-screen bg-gray-50 px-6 py-8">
+      <section className="bg-white shadow-sm p-8 flex flex-col items-center text-center rounded-lg mb-8">
+        <div className="relative mb-4">
           <img
-            src={user.profile?.avatarUrl || "/images/default-avatar.jpg"}
-            alt="profile"
-            className="w-24 h-24 rounded-full object-cover border-2"
+            src={user.profilePicture}
+            alt={`${user.name}'s profile`}
+            className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
           />
-          <div className="flex-1">
-            <h1 className="text-2xl font-semibold">{user.username}</h1>
-            {isEditingBio ? (
-              <div>
-                <textarea
-                  className="border rounded-md p-2 w-full mt-2"
-                  rows={3}
-                  value={bioDraft}
-                  onChange={(e) => setBioDraft(e.target.value)}
-                />
-                <div className="mt-2 flex gap-2">
-                  <button onClick={handleBioSave} className="bg-indigo-600 text-white px-4 py-2 rounded">Save</button>
-                  <button onClick={() => setIsEditingBio(false)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-                </div>
-              </div>
-            ) : (
-              <p className="text-gray-600 mt-2">
-                {user.profile?.bio || "No bio yet."}
-                <button onClick={() => setIsEditingBio(true)} className="text-indigo-600 ml-2 text-sm hover:underline">Edit</button>
-              </p>
-            )}
-          </div>
         </div>
-      </div>
+
+        <h1 className="text-3xl font-semibold text-gray-800 mb-2">{user.name}</h1>
+        <p className="text-base mb-2 text-gray-800">{user.bio}</p>
+      </section>
+
+      <main className="flex-1">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Featured Artwork</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+          {user.featuredArtworks.length === 0 && (
+            <div className="text-gray-600">No featured artworks yet.</div>
+          )}
+
+          {user.featuredArtworks.map((art) => (
+            <div key={art._id || art.id || art.title} className="relative">
+              <Card image={art.fileUrl || art.image || ""} title={art.title || "Untitled"} />
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 }

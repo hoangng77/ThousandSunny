@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   passwordResetToken: String,
   passwordResetExpires: Date,
+  preferredGenres: [{
+    genre: String,
+    count: { type: Number, default: 1 }
+  }],  
 }, { timestamps: true });
 
 export default mongoose.model("User", userSchema);

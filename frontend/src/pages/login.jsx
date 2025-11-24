@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 
 export default function Login() {
-
   const [input, setInput] = useState({ email: "", password: "" });
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
@@ -26,7 +25,6 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", JSON.stringify(data.role));
       setStatus("success");
-
     } catch (err) {
       setStatus("typing");
       setError(err.message);
@@ -78,6 +76,17 @@ export default function Login() {
           {status === "submitting" ? "Logging in..." : "Login"}
         </button>
         {error && <p className="text-red-500 text-center">{error}</p>}
+
+        {/* New registration link */}
+        <p className="text-center text-gray-600 mt-2">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-indigo-600 hover:underline font-semibold"
+          >
+            Register
+          </Link>
+        </p>
       </form>
     </div>
   );

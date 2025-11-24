@@ -24,8 +24,9 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error(err));
 
 // Routes
+app.use("/uploads", express.static("uploads"));
 app.use("/auth", authRoutes);
-app.use("/profile", profileRoutes);
+app.use("/profilePage", profileRoutes);
 app.use("/artist", artistRoutes);
 app.use("/consumer", consumerRoutes);
 app.use("/discover", discoverRoutes);
@@ -37,3 +38,4 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

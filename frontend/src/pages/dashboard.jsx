@@ -45,7 +45,7 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold mb-2">Profile</h2>
             <p className="text-gray-600">Edit bio, avatar, and details.</p>
             <Link
-              to={`/profile/${user.username}`}
+              to={`/profilePage/${user.username}`}
               className="text-indigo-600 mt-3 inline-block"
             >
               Go →

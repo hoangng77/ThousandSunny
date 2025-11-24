@@ -9,6 +9,9 @@ import Upload from "./pages/upload";
 import Library from "./pages/library";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Progress from "./pages/progress";
+import Following from "./pages/following";
+import Discover from "./pages/discover";
 
 function App() {
   return (
@@ -17,10 +20,12 @@ function App() {
       <div className="pt-16 px-6 h-screen w-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/profilePage/:username" element={<ProfilePage />} />
+          <Route path="/discover" element={<Discover />} />
 
           {/* Consumer-only pages */}
           <Route path="/library" element={<Library />} />
+          <Route path="/following" element={<Following />} />
 
           {/* Artist-only pages */}
           <Route path="/portfolio" element={<Portfolio />} />
@@ -30,6 +35,7 @@ function App() {
           {/* Auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/progress" element={<Progress />} />
         </Routes>
       </div>
     </Router>

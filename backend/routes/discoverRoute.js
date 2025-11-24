@@ -1,8 +1,9 @@
 import express from "express";
 import { getDiscover } from "../controllers/discoverControllers/getDiscover.js";
+import { protect } from "../middleware/authentication.js";
 
 const router = express.Router();
 
-router.get("/", getDiscover);
+router.get("/", protect, getDiscover);
 
 export default router;

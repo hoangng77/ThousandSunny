@@ -1,6 +1,6 @@
 import React from "react";
 import Hero from "../components/hero";
-import Card from "../components/card";
+import { Card } from "../components/card";
 
 export default function Home() {
   const sampleContent = [
@@ -18,7 +18,7 @@ export default function Home() {
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Discover</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {sampleContent.map((item) => (
-            <a href="/dashboard"><Card key={item._id} image={item.fileUrl} title={item.title} /></a>
+            <a href="/login"><Card key={item._id} image={item.fileUrl} title={item.title} /></a>
           ))}
         </div>
       </main>

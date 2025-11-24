@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 
 const storage = multer.diskStorage({
     destination: "uploads/",
@@ -8,5 +9,20 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage});
+// Ensure uploads directory exists
+const uploadDir = "uploads/";
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ["image/jpg", "image/png", "image/gif"];
+        if (!allowedTypes.includes(file.mimetype)) {
+            return cb(new Error("Unsupported file type"), false);
+        }
+        cb(null, true);
+    },
+});
 export default upload;
