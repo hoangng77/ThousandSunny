@@ -12,10 +12,10 @@ export const registerUser = async(req, res) => {
           return res.status(400).json({ message: "All fields are required" });
         }
     
-        if (!validator.isEmail(email)) {
+        if (!validator.isEmail(email.toString())) {
           return res.status(400).json({ message: "Invalid email format" });
         }
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: email.toString() });
         if (existingUser) {
           return res.status(400).json({ message: "Email already registered" });
         }
@@ -23,8 +23,8 @@ export const registerUser = async(req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
     
         const newUser = new User({
-          username,
-          email,
+          username: username.toString(),
+          email: email.toString(),
           password: hashedPassword,
           role,
         });
@@ -58,7 +58,7 @@ export const loginUser = async (req, res) => {
         return res.status(400).json({ message: "Email and password required" });
       }
   
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email: email.toString() });
       if (!user) return res.status(400).json({ message: "Invalid credentials" });
   
       const isMatch = await bcrypt.compare(password, user.password);

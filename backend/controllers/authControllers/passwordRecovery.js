@@ -4,7 +4,7 @@ import User from "../../models/user.js";
 export const forgetPassword = async (req, res) => {
     const { email } = req.body;
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email.toString() });
         if (!user) {
             return res.status(404).json({ message: "No user with this email"});
         }
