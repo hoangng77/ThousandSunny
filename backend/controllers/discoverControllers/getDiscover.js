@@ -15,7 +15,7 @@ export const getDiscover = async (req, res) => {
     if (role === "consumer") {
       libraryIds = (user.library || [])
         .map(item => item.content?._id)
-        .filter(id => id) // remove null, empty, undefined
+        .filter(Boolean) // remove null, empty, undefined
         .map(id => new mongoose.Types.ObjectId(id));
     }
 
