@@ -19,13 +19,15 @@ export default function Portfolio() {
     fetchPortfolio();
   }, []);
 
+  console.log("portfolio data:", portfolio);
+
   return (
     <div className="min-h-screen p-8 bg-gray-50">
       <h1 className="text-2xl font-semibold mb-4">My Portfolio</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {portfolio.map((item) => (
           <div key={item._id} className="bg-white p-4 rounded shadow">
-            <img src={item.fileUrl} alt={item.title} className="w-full h-48 object-cover rounded" />
+            <img src={`http://localhost:5000/${item.fileUrl}`} alt={item.title} className="w-full h-48 object-cover rounded" />
             <p className="mt-2 font-medium">{item.title}</p>
           </div>
         ))}

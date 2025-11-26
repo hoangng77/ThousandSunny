@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import fs from "node:fs";
+import path from "node:path";
 
 // Routes
 import authRoutes from "./routes/authRoute.js";
@@ -9,6 +11,10 @@ import profileRoutes from "./routes/profileRoute.js";
 import artistRoutes from "./routes/artistRoute.js";
 import consumerRoutes from "./routes/consumerRoute.js";
 import discoverRoutes from "./routes/discoverRoute.js";
+
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -27,7 +33,7 @@ try {
 }
 
 // Routes
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); 
 app.use("/auth", authRoutes);
 app.use("/profilePage", profileRoutes);
 app.use("/artist", artistRoutes);

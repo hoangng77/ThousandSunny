@@ -1,18 +1,29 @@
 import multer from "multer";
 import fs from "node:fs";
+import path from "node:path"
 
 const storage = multer.diskStorage({
-    destination: "uploads/",
+    // Store uploaded files in a subdirectory named with the artist ID
+    destination: (req, file, cb) => {
+        const artistId = req.user?._id
+
+        if (!artistId) {
+            return cb(new Error("No artist ID"), null);
+        }
+
+        const artistDir = path.join("uploads", `${artistId}`);
+        console.log(artistDir);
+        if (!fs.existsSync(artistDir)) {
+            fs.mkdirSync(artistDir, { recursive: true });
+        }
+        cb(null, artistDir);
+    },
+
+    // Files are named with a timestamp and the original name
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
-
-// Ensure uploads directory exists
-const uploadDir = "uploads/";
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
 
 const upload = multer({
     storage,
