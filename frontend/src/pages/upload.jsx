@@ -11,10 +11,15 @@ export default function Upload() {
   const [seriesTitle, setSeriesTitle] = useState("");
   const [episodeNumber, setEpisodeNumber] = useState("");
   const [seriesId, setSeriesId] = useState("");
-
+  const [isOriginalWork, setIsOriginalWork] = useState(false);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isOriginalWork) {
+      alert("You must confirm that this is your original work.");
+      return;
+    }
     if (!genre) {
       alert("Please select a genre.");
       return;
@@ -109,7 +114,9 @@ export default function Upload() {
 
         {/* File Upload */}
         <input className="border p-2 rounded" type="file" onChange={(e) => setFile(e.target.files[0])} />
-
+        <label>
+          <input type="checkbox" onChange={(e) => setIsOriginalWork(e.target.checked)}/> I confirm that this is my original work.
+        </label>
         <button type="submit" className="bg-indigo-600 text-white py-2 rounded">Upload</button>
       </form>
     </div>
