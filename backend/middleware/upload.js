@@ -17,7 +17,8 @@ if (!fs.existsSync(uploadDir)) {
 const upload = multer({
     storage,
     fileFilter: (req, file, cb) => {
-        const allowedTypes = ["image/jpg", "image/png", "image/gif"];
+        const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+        console.log(file.mimetype);
         if (!allowedTypes.includes(file.mimetype)) {
             return cb(new Error("Unsupported file type"), false);
         }
