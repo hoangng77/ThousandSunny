@@ -12,6 +12,7 @@ import Register from "./pages/register";
 import Progress from "./pages/progress";
 import Following from "./pages/following";
 import Discover from "./pages/discover";
+import ArtPage from "./pages/art"
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profilePage/:username" element={<ProfilePage />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="/media/:id" element={<ArtPage />} />
+
 
           {/* Consumer-only pages */}
           <Route path="/library" element={<Library />} />

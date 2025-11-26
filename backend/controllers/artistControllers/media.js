@@ -1,5 +1,15 @@
 import Content from '../../models/content.js';
 
+export const getMedia = async (req, res) => {
+    try {
+        const media = await Content.findById(req.params.id);
+        if (!media) return res.status(404).json({ message: "Content not found" });
+        res.json(media);
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
 export const uploadMedia = async (req, res) => {
     try {
         const { title, description, genre } = req.body;
@@ -16,7 +26,7 @@ export const uploadMedia = async (req, res) => {
             title,
             description,
             genre,
-            fileUrl: req.file.path, // Save the file path from multer
+            fileUrl: req.file.path, 
             status: 'published',
         });
         
