@@ -4,20 +4,26 @@ import Content from "../../models/content.js";
 export const getLibrary = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
-      .populate("library.content");
+      .populate({
+        path: "library.content",
+        populate: {
+          path: "artist",
+          select: "username profile.avatarUrl"  // only needed fields
+        }
+      });
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json({ library: user.library });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server error", error });
   }
 };
 
 export const addToLibrary = async (req, res) => {
   try {
-    const { contentId } = req.body;
-
+    const { contentId } = req.params;
     const user = await User.findById(req.user.id);
     const content = await Content.findById(contentId);
 
@@ -59,9 +65,9 @@ export const addToLibrary = async (req, res) => {
 
 export const removeFromLibrary = async (req, res) => {
   try {
-    const { contentId } = req.body;
+    const { contentId } = req.params;
 
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user.id);
     const content = await Content.findById(contentId);
 
     if (!content) return res.status(404).json({ message: "Content not found" });
@@ -85,6 +91,7 @@ export const removeFromLibrary = async (req, res) => {
     res.json({ library: user.library });
 
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error", error });
   }
 };

@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import API from "../route/index"; 
 import { Link } from "react-router-dom";
+import { getDiscover } from "../route/discover";
+import { addToLibrary, followArtist } from "../route/consumer";
 
 export default function DiscoverPage() {
   const [artworks, setArtworks] = useState([]);
   const [role, setRole] = useState("consumer"); 
   const [loading, setLoading] = useState(true);
+  const [followingIds, setFollowingIds] = useState([]); // track followed artists
 
   const fetchDiscover = async () => {
     try {
-      const res = await API.get("/discover");
+      const res = await getDiscover();
       console.log("Backend response:", res.data);
       setArtworks(res.data.artworks || []);
       setRole(res.data.role);
+      if (res.data.userFollowing) {
+        setFollowingIds(res.data.userFollowing);
+      }      
     } catch (err) {
       console.error(err);
     } finally {
@@ -24,19 +30,19 @@ export default function DiscoverPage() {
     fetchDiscover();
   }, []);
 
-  const addToLibrary = async (artId) => {
+  const handleAddToLibrary = async (artId) => {
     try {
-      await API.post("/consumer/library", { contentId: artId });
+      await addToLibrary(artId);
       fetchDiscover(); // refresh page
     } catch (err) {
       console.error(err);
     }
   };
 
-  const followArtist = async (artistId) => {
+  const handleFollowArtist = async (artistId) => {
     try {
-      await API.post(`/consumer/follow/${artistId}`);
-      fetchDiscover();
+      await followArtist(artistId);
+      fetchDiscover(); // refresh state
     } catch (err) {
       console.error(err);
     }
@@ -52,55 +58,65 @@ export default function DiscoverPage() {
         <p className="text-gray-500">No artworks to discover yet.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {artworks.map((art) => (
-            <div
-              key={art._id}
-              className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition"
-            >
-              <img
-                src={`http://localhost:5000${art.fileUrl}`}
-                alt={art.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-3">
-                <h2 className="font-semibold">{art.title}</h2>
-                <p className="text-sm text-gray-500">
-                  Genre: {art.genre}{" "}
-                  {art.contentType === "series" && `• Episode ${art.episodeNumber}`}
-                </p>
+          {artworks.map((art) => {
+            const isFollowing = followingIds.includes(art.artistInfo._id);
 
-                <div className="mt-2 flex items-center justify-between">
-                  {role === "consumer" ? (
-                    <>
-                      <button
-                        onClick={() => addToLibrary(art._id)}
-                        className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-                      >
-                        Add to Library
-                      </button>
-                      <button
-                        onClick={() => followArtist(art.artistInfo._id)}
-                        className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-                      >
-                        Follow Artist
-                      </button>
-                    </>
-                  ) : (
-                    <span className="text-sm text-gray-700">
-                      Added to Library: {art.addedCount}
-                    </span>
-                  )}
+            return (
+              <div
+                key={art._id}
+                className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition"
+              >
+                <img
+                  src={`http://localhost:5000${art.fileUrl}`}
+                  alt={art.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-3">
+                  <h2 className="font-semibold">{art.title}</h2>
+                  <p className="text-sm text-gray-500">
+                    Genre: {art.genre}{" "}
+                    {art.contentType === "series" && `• Episode ${art.episodeNumber}`}
+                  </p>
+
+                  <div className="mt-2 flex items-center justify-between">
+                    {role === "consumer" ? (
+                      <>
+                        <button
+                          onClick={() => handleAddToLibrary(art._id)}
+                          className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Add to Library
+                        </button>
+
+                        <button
+                          onClick={() => !isFollowing && handleFollowArtist(art.artistInfo._id)}
+                          className={`px-3 py-1 text-sm rounded ${
+                            isFollowing
+                              ? "bg-gray-400 text-white cursor-not-allowed"
+                              : "bg-green-600 text-white hover:bg-green-700"
+                          }`}
+                          disabled={isFollowing}
+                        >
+                          {isFollowing ? "Following" : "Follow Artist"}
+                        </button>
+                      </>
+                    ) : (
+                      <span className="text-sm text-gray-700">
+                        Added to Library: {art.addedCount}
+                      </span>
+                    )}
+                  </div>
+
+                  <Link
+                    to={`/portfolio/${art.artistInfo.username}`}
+                    className="mt-2 block text-sm text-blue-600 hover:underline"
+                  >
+                    View Artist
+                  </Link>
                 </div>
-
-                <Link
-                  to={`/artist/portfolio`}
-                  className="mt-2 block text-sm text-blue-600 hover:underline"
-                >
-                  View Artist
-                </Link>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

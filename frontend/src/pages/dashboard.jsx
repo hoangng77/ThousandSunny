@@ -14,7 +14,7 @@ export default function Dashboard() {
           <div className="bg-white p-6 rounded-lg shadow hover:shadow-md">
             <h2 className="text-xl font-semibold mb-2">Portfolio</h2>
             <p className="text-gray-600">Manage your portfolio and artworks.</p>
-            <Link to="/portfolio" className="text-indigo-600 mt-3 inline-block">
+            <Link to={`/portfolio/${user.username}`} className="text-indigo-600 mt-3 inline-block">
               Go →
             </Link>
           </div>
@@ -45,7 +45,7 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold mb-2">Profile</h2>
             <p className="text-gray-600">Edit bio, avatar, and details.</p>
             <Link
-              to={`/profilePage/${user.username}`}
+              to={`/profile/${user.username}`}
               className="text-indigo-600 mt-3 inline-block"
             >
               Go →

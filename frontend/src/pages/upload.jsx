@@ -57,7 +57,6 @@ export default function Upload() {
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow w-full max-w-md flex flex-col gap-4">
         <h1 className="text-xl font-semibold">Upload Artwork</h1>
 
-        {/* Content Type */}
         <div className="flex gap-4">
           <label className="flex items-center gap-2">
             <input 
@@ -80,13 +79,10 @@ export default function Upload() {
           </label>
         </div>
 
-        {/* Title */}
         <input className="border p-2 rounded" type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
 
-        {/* Description */}
         <input className="border p-2 rounded" type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
 
-        {/* ⭐ GENRE SELECTOR (dropdown) */}
         <select
           className="border p-2 rounded"
           value={genre}
@@ -98,7 +94,6 @@ export default function Upload() {
           ))}
         </select>
 
-        {/* Series fields */}
         {contentType === "series" && (
           <>
             <input className="border p-2 rounded" type="text" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} />

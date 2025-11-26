@@ -12,6 +12,8 @@ import Register from "./pages/register";
 import Progress from "./pages/progress";
 import Following from "./pages/following";
 import Discover from "./pages/discover";
+import ProfileEdit from "./pages/profileEdit";
+import ForYou from "./pages/forYou";
 
 function App() {
   return (
@@ -20,15 +22,17 @@ function App() {
       <div className="pt-16 px-6 h-screen w-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profilePage/:username" element={<ProfilePage />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="/foryou" element={<ForYou />} />
 
           {/* Consumer-only pages */}
           <Route path="/library" element={<Library />} />
           <Route path="/following" element={<Following />} />
+          <Route path="/edit-profile" element={<ProfileEdit />} />
 
           {/* Artist-only pages */}
-          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/:username" element={<Portfolio />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<Upload />} />
 

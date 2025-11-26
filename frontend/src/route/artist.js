@@ -14,8 +14,8 @@ export const updateMedia = (id, data) =>
 export const deleteMedia = (id) =>
   API.delete(`/artist/content/${id}`);
 
-export const getPortfolio = () =>
-  API.get("/artist/portfolio");
+export const getPortfolio = (username) =>
+  API.get(`/portfolio/${username}`);
 
 export const getProgress = () =>
   API.get("/artist/progress");

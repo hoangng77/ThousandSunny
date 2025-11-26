@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, Link } from "react-router-dom";
 import { getProfile } from "../route/profile";
 import { Card } from "../components/card";
+import { AuthContext } from "../context/authProvider"; // import context
 
 export default function ProfilePage() {
   const { username } = useParams();
+  const { user: currentUser } = useContext(AuthContext); // logged-in user
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,12 +14,6 @@ export default function ProfilePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!username) {
-      setNotFound(true);
-      setLoading(false);
-      return;
-    }
-
     let cancelled = false;
 
     async function fetchProfile() {
@@ -29,67 +25,100 @@ export default function ProfilePage() {
           return;
         }
 
-        const data = res.data;
-        const u = data.user;   
+        const u = res.data.user;
 
         if (!cancelled) {
           setUser({
-            name: u.username,
-            profilePicture: u.profile?.avatarUrl || "",
-            bio: u.profile?.bio || "Hello! This is my profile.",
-            featuredArtworks: u.featuredArtworks || [],
-            raw: data,
+            username: u.username,
+            bio: u.profile?.bio || "This user has no bio yet.",
+            avatar: u.profile?.avatarUrl || null,
+            preferredGenres: u.preferredGenres || [],
+            library: u.library || [],
+            followingCount: u.following?.length || 0,
           });
         }
-
       } catch (err) {
-        if (!cancelled) setError(err.message || "Unknown error");
+        if (!cancelled) setError(err.message);
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
 
     fetchProfile();
-
-    return () => {
-      cancelled = true;
-    };
+    return () => (cancelled = true);
   }, [username]);
 
-  if (loading) return <div className="text-center mt-20">Loading profile…</div>;
-  if (error) return <div className="text-center mt-20 text-red-600">Error: {error}</div>;
-  if (notFound || !user)
-    return <h1 className="text-center mt-20 text-2xl text-red-600">Profile Not Found</h1>;
+  if (loading) return <div className="text-center mt-20">Loading...</div>;
+  if (notFound) return <div className="text-center mt-20 text-red-600">Profile Not Found</div>;
+  if (error) return <div className="text-center mt-20 text-red-600">{error}</div>;
+
+  const isOwnProfile = currentUser?.username === username; // check ownership
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen bg-gray-50 px-6 py-8">
-      <section className="bg-white shadow-sm p-8 flex flex-col items-center text-center rounded-lg mb-8">
-        <div className="relative mb-4">
-          <img
-            src={user.profilePicture}
-            alt={`${user.name}'s profile`}
-            className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-          />
-        </div>
+    <div className="px-6 py-8">
+      {/* Profile header */}
+      <section className="bg-white p-8 shadow rounded-lg text-center">
+        <img
+          src={user.avatar ? `http://localhost:5000${user.avatar}` : "/default-avatar.png"}
+          className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border"
+          alt="Profile"
+        />
 
-        <h1 className="text-3xl font-semibold text-gray-800 mb-2">{user.name}</h1>
-        <p className="text-base mb-2 text-gray-800">{user.bio}</p>
+        <h1 className="text-3xl font-semibold">{user.username}</h1>
+        <p className="mt-2 text-gray-700">{user.bio}</p>
+
+        <p className="mt-4 text-gray-600">
+          <strong>Following:</strong> {user.followingCount}
+        </p>
+
+        {isOwnProfile && (
+          <Link
+            to={`/edit-profile`}
+            className="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded"
+          >
+            Edit Profile
+          </Link>
+        )}
       </section>
 
-      <main className="flex-1">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Featured Artwork</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
-          {user.featuredArtworks.length === 0 && (
-            <div className="text-gray-600">No featured artworks yet.</div>
+      {/* Preferred Genres */}
+      <section className="mt-10">
+        <h2 className="text-2xl font-semibold mb-3">Preferred Genres</h2>
+
+        <div className="flex gap-2 flex-wrap">
+          {user.preferredGenres.length === 0 && (
+            <p className="text-gray-600">No preferred genres yet.</p>
           )}
 
-          {user.featuredArtworks.map((art) => (
-            <div key={art._id || art.id || art.title} className="relative">
-              <Card image={art.fileUrl || art.image || ""} title={art.title || "Untitled"} />
-            </div>
+          {user.preferredGenres.map((g) => (
+            <span
+              key={g._id}
+              className="px-3 py-1 bg-gray-200 rounded-full text-sm"
+            >
+              {g.genre} ({g.count})
+            </span>
           ))}
         </div>
-      </main>
+      </section>
+
+      {/* Library by Genre */}
+      <section className="mt-10">
+        <h2 className="text-2xl font-semibold mb-4">Library</h2>
+
+        {user.library.length === 0 ? (
+          <p className="text-gray-600">No artworks in library.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {user.library.map((item) => (
+              <Card
+                key={item._id}
+                title={item.content?.title}
+                image={`http://localhost:5000${item.content.fileUrl}`}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

@@ -80,13 +80,20 @@ export const getDiscover = async (req, res) => {
     // 5. Run aggregation safely
     const artworks = await Content.aggregate(pipeline);
 
+    let userFollowing = [];
+    if (req.user) {
+      const user = await User.findById(req.user.id).select("following");
+      userFollowing = user.following.map((id) => id.toString());
+    }
+
     res.json({
       artworks,
-      role
+      role,
+      userFollowing,
     });
 
   } catch (err) {
-    console.error("❌ DISCOVER ERROR:", err);
+    console.error("DISCOVER ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

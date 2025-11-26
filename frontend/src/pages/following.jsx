@@ -66,7 +66,7 @@ export default function FollowingPage() {
               className="flex items-center p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition"
             >
               <img
-                src={artist?.profile?.avatarUrl || "/default-avatar.png"}
+                src={artist.profile?.avatarUrl ? `http://localhost:5000${artist.profile.avatarUrl}` : "/default-avatar.png"}
                 alt={`${artist.username} avatar`}
                 className="w-16 h-16 rounded-full object-cover"
               />
@@ -86,7 +86,7 @@ export default function FollowingPage() {
               </button>
 
               <Link
-                to={`/artist/${artist._id}/portfolio`}
+                to={`/portfolio/${artist.username}`}
                 className="ml-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
               >
                 View
