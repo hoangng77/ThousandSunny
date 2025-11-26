@@ -12,7 +12,7 @@ export const uploadMedia = async (req, res) => {
         }
 
         const media = new Content({
-            artist: req.user._id,
+            artist: req.user._id, // ._id might cause issues
             title,
             description,
             genre,
