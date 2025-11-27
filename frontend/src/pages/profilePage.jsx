@@ -73,7 +73,7 @@ export default function ProfilePage() {
 
         {isOwnProfile && (
           <Link
-            to={`/edit-profile`}
+            to={`/edit-profile/${user.username}`}
             className="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded"
           >
             Edit Profile

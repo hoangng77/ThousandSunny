@@ -1,20 +1,33 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { updateProfile } from "../route/profile";
 
 export default function ProfileEdit() {
   const { user, setUser } = useContext(AuthContext);
+  const { username } = useParams();
 
+  // HOOKS FIRST: always run
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
   const [bio, setBio] = useState("");
 
+  // Initialize form data
   useEffect(() => {
     if (user) {
       setBio(user.profile?.bio || "");
       setAvatarPreview(user.profile?.avatarUrl || null);
     }
   }, [user]);
+
+  // Early returns after hooks
+  if (!user) {
+    return <div className="p-10">Loading...</div>;
+  }
+
+  if (user.username !== username) {
+    return <div className="p-10 text-red-600">Unauthorized to edit this profile.</div>;
+  }
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -32,13 +45,19 @@ export default function ProfileEdit() {
     try {
       const res = await updateProfile(formData);
       alert("Profile updated!");
+      setUser((prev) => ({
+        ...prev,
+        profile: {
+          ...prev.profile,
+          bio: res.data.bio,
+          avatarUrl: res.data.avatarUrl,
+        },
+      }));
     } catch (err) {
       console.error(err);
       alert("Failed to update profile.");
     }
   };
-
-  if (!user) return <div className="p-10">Loading...</div>;
 
   return (
     <div className="max-w-3xl mx-auto p-6">
