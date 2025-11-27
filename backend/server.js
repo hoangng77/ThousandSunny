@@ -35,7 +35,7 @@ try {
 // Routes
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); 
 app.use("/auth", authRoutes);
-app.use("/profilePage", profileRoutes);
+app.use("/profile", profileRoutes);
 app.use("/artist", artistRoutes);
 app.use("/consumer", consumerRoutes);
 app.use("/discover", discoverRoutes);

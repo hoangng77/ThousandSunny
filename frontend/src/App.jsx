@@ -21,7 +21,7 @@ function App() {
       <div className="pt-16 px-6 h-screen w-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profilePage/:username" element={<ProfilePage />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/media/:id" element={<ArtPage />} />
 
