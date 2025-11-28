@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProfile } from "../route/profile";
 import { Card } from "../components/card";
 import { AuthContext } from "../context/authProvider"; // import context
@@ -7,6 +7,7 @@ import { AuthContext } from "../context/authProvider"; // import context
 export default function ProfilePage() {
   const { username } = useParams();
   const { user: currentUser } = useContext(AuthContext); // logged-in user
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -114,6 +115,7 @@ export default function ProfilePage() {
                 key={item._id}
                 title={item.content?.title}
                 image={`http://localhost:5000/${item.content.fileUrl}`}
+                onClick={() => navigate(`/content/${item.content._id}`)}
               />
             ))}
           </div>
