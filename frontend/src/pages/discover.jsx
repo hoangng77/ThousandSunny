@@ -3,6 +3,8 @@ import API from "../route/index";
 import { Link } from "react-router-dom";
 import { getDiscover } from "../route/discover";
 import { addToLibrary, followArtist } from "../route/consumer";
+import Modal from "../components/Modal";
+import '../components/Modal.css';
 
 export default function DiscoverPage() {
   const [artworks, setArtworks] = useState([]);
@@ -12,6 +14,7 @@ export default function DiscoverPage() {
   const [loading, setLoading] = useState(true);
   const [followingIds, setFollowingIds] = useState([]); // track followed artists
   const [contentType, setContentType] = useState("all");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const fetchDiscover = async () => {
     try {
@@ -125,7 +128,8 @@ export default function DiscoverPage() {
                 <img
                   src={`http://localhost:5000/${art.fileUrl}`}
                   alt={art.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover cursor-pointer hover:opacity-75 transition"
+                  onClick={() => setSelectedImage(art)}
                 />
                 <div className="p-3">
                   <h2 className="font-semibold">{art.title}</h2>
@@ -175,6 +179,28 @@ export default function DiscoverPage() {
           })}
         </div>
       )}
+
+      <Modal isOpen={!!selectedImage} onClose={() => setSelectedImage(null)}>
+        {selectedImage && (
+          <div className="flex flex-col items-center">
+            <h2 className="text-2xl font-bold mb-4">{selectedImage.title}</h2>
+            <img
+              src={`http://localhost:5000/${selectedImage.fileUrl}`}
+              alt={selectedImage.title}
+              className="max-h-96 w-auto object-contain mb-4"
+            />
+            <p className="text-gray-700 text-center mb-2">{selectedImage.description}</p>
+            <p className="text-sm text-gray-600 mb-2">
+              By: <span className="font-semibold">{selectedImage.artistInfo?.username || "Unknown Artist"}</span>
+            </p>
+            <p className="text-sm text-gray-600">
+              Genre: {selectedImage.genre}
+              {selectedImage.contentType === "series" &&
+                ` • Episode ${selectedImage.episodeNumber}`}
+            </p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
