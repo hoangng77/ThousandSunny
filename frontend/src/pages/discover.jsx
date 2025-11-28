@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 export default function DiscoverPage() {
   const [artworks, setArtworks] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState("all");
+  const [search, setSearch] = useState("");
   const [role, setRole] = useState("consumer"); 
   const [loading, setLoading] = useState(true);
 
@@ -44,15 +46,53 @@ export default function DiscoverPage() {
 
   if (loading) return <div className="text-center mt-20">Loading Discover…</div>;
 
+  // Select only artworks that fit the dropdown
+  const filteredArtworks = artworks.filter((art) => {
+    const matchesGenre =
+      selectedGenre === "all" || art.genre === selectedGenre;
+    const matchesSearch = art.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    return matchesGenre && matchesSearch;
+  });
+
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Discover Artworks</h1>
-
-      {artworks.length === 0 ? (
+      <div className="flex gap-4">
+        {/* Search box */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border rounded px-3 py-1 w-full sm:w-64"
+          />
+        </div>
+        {/* Dropdown menu to filter works by genre */}
+        <div className="mb-4">
+          <label className="mr-2 font-medium">Filter by Genre:</label>
+            <select
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+              className="border rounded px-2 py-1"
+            >
+              <option value="all">All</option>
+              {[...new Set(artworks.map((art) => art.genre))].map((genre) => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
+            </select>
+        </div>
+      </div>
+      {filteredArtworks.length === 0 ? (
         <p className="text-gray-500">No artworks to discover yet.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {artworks.map((art) => (
+          {filteredArtworks.map((art) => (
             <div
               key={art._id}
               className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition"
