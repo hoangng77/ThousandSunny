@@ -11,6 +11,7 @@ export default function DiscoverPage() {
   const [role, setRole] = useState("consumer"); 
   const [loading, setLoading] = useState(true);
   const [followingIds, setFollowingIds] = useState([]); // track followed artists
+  const [contentType, setContentType] = useState("all");
 
   const fetchDiscover = async () => {
     try {
@@ -59,7 +60,9 @@ export default function DiscoverPage() {
     const matchesSearch = art.title
       .toLowerCase()
       .includes(search.toLowerCase());
-    return matchesGenre && matchesSearch;
+    const matchesType =
+      contentType === "all" || art.contentType === contentType;
+    return matchesGenre && matchesSearch && matchesType;
   });
 
 
@@ -92,6 +95,19 @@ export default function DiscoverPage() {
                 </option>
               ))}
             </select>
+        </div>
+        {/* Dropdown menu to filter works by single/series*/}
+        <div>
+          <label className="mr-2 font-medium">Filter by Serialized:</label>
+          <select
+            value={contentType}
+            onChange={(e) => setContentType(e.target.value)}
+            className="border rounded px-2 py-1"
+          >
+            <option value="all">All</option>
+            <option value="series">Series</option>
+            <option value="single">Individual</option>
+          </select>
         </div>
       </div>
       {filteredArtworks.length === 0 ? (
