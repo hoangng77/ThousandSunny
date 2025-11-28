@@ -15,6 +15,8 @@ export default function Upload() {
   const [seriesId, setSeriesId] = useState("");
   const [isOriginalWork, setIsOriginalWork] = useState(false);
   
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,6 +33,7 @@ export default function Upload() {
       alert("Please select a file to upload.");
       return;
     }
+    const isSeries = contentType === "series";
 
     // Series validation
     if (isSeries) {
