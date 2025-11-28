@@ -10,12 +10,13 @@ export const protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.id).select("username role _id");
         req.user = {
-            id: user._id.toString(),
+            _id: user._id.toString(), // keep consistent with rest of code
             role: user.role,
             username: user.username,
         };
         next();
     } catch (err) {
-        res.status(401).json({ message: "Token is not valid" });
+        console.log("Authentication error: ", err);
+        return res.status(500).json({ message: "Invalid token" });
     }
 };

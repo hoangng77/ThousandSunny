@@ -13,17 +13,15 @@ export default function Upload() {
   const [seriesTitle, setSeriesTitle] = useState("");
   const [episodeNumber, setEpisodeNumber] = useState("");
   const [seriesId, setSeriesId] = useState("");
-
+  const [isOriginalWork, setIsOriginalWork] = useState(false);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isSeries = contentType === "series";
 
-    // Basic validation
-    if (!title.trim()) {
-      alert("Please enter a title.");
+    if (!isOriginalWork) {
+      alert("You must confirm that this is your original work.");
       return;
     }
-
     if (!genre) {
       alert("Please select a genre.");
       return;
@@ -94,23 +92,23 @@ export default function Upload() {
         {/* Content type selection */}
         <div className="flex gap-4">
           <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              value="single"
-              checked={contentType === "single"}
-              onChange={(e) => setContentType(e.target.value)}
-            />
-            Single Media
+            <input 
+              type="radio" 
+              value="single" 
+              checked={contentType === "single"} 
+              onChange={(e) => setContentType(e.target.value)} 
+            />{/*
+            */}Single Media
           </label>
 
           <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              value="series"
-              checked={contentType === "series"}
-              onChange={(e) => setContentType(e.target.value)}
-            />
-            Serialized Content
+            <input 
+              type="radio" 
+              value="series" 
+              checked={contentType === "series"} 
+              onChange={(e) => setContentType(e.target.value)} 
+            />{/*
+            */}Serialized Content
           </label>
         </div>
 
@@ -179,7 +177,9 @@ export default function Upload() {
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
         />
-
+        <label>
+          <input type="checkbox" onChange={(e) => setIsOriginalWork(e.target.checked)}/> I confirm that this is my original work.
+        </label>
         <button type="submit" className="bg-indigo-600 text-white py-2 rounded">
           Upload
         </button>

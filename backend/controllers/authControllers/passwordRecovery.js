@@ -1,10 +1,10 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import User from "../../models/user.js";
 
 export const forgetPassword = async (req, res) => {
     const { email } = req.body;
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email.toString() });
         if (!user) {
             return res.status(404).json({ message: "No user with this email"});
         }
@@ -14,7 +14,7 @@ export const forgetPassword = async (req, res) => {
         user.resetPasswordExpires = Date.now() + 15*3600;
         await user.save();
 
-        const resetUrl = 'http://localhost:3000/reset-password/${resetToken}';
+        // const resetUrl = 'http://localhost:3000/reset-password/${resetToken}';
         res.json({message: "Password reset link has been sent"});
     }
     catch (err){

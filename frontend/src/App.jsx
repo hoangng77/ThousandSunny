@@ -16,6 +16,7 @@ import ProfileEdit from "./pages/profileEdit";
 import ForYou from "./pages/forYou";
 import EditMedia from "./pages/mediaEdit";
 import EditPortfolio from "./pages/portfolioEdit";
+import ArtPage from "./pages/art"
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/foryou" element={<ForYou />} />
+          <Route path="/media/:id" element={<ArtPage />} />
+
 
           {/* Consumer-only pages */}
           <Route path="/library" element={<Library />} />

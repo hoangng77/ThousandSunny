@@ -31,7 +31,7 @@ export default function Register() {
   if (status === "success")
     return (
       <h1 className="text-center mt-20 text-2xl text-green-600">
-        Registration Successful 🎉
+        Registration Successful!
       </h1>
     );
 
@@ -78,8 +78,8 @@ export default function Register() {
               checked={input.role === "artist"}
               onChange={handleChange}
               className="accent-indigo-600"
-            />
-            Artist
+            />{/*
+            */}Artist
           </label>
 
           <label className="flex items-center gap-2">
@@ -90,8 +90,8 @@ export default function Register() {
               checked={input.role === "consumer"}
               onChange={handleChange}
               className="accent-indigo-600"
-            />
-            Consumer
+            />{/*
+            */}Consumer
           </label>
         </div>
 

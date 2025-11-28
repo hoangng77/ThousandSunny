@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 export const getDiscover = async (req, res) => {
   try {
     // 1. Load user safely
-    const user = await User.findById(req.user.id).populate("library.content");
+    const user = await User.findById(req.user._id).populate("library.content");
 
     const role = user.role;
 
@@ -15,7 +15,7 @@ export const getDiscover = async (req, res) => {
     if (role === "consumer") {
       libraryIds = (user.library || [])
         .map(item => item.content?._id)
-        .filter(id => id) // remove null, empty, undefined
+        .filter(Boolean) // remove null, empty, undefined
         .map(id => new mongoose.Types.ObjectId(id));
     }
 
