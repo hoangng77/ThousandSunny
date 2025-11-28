@@ -1,4 +1,5 @@
 import Content from '../../models/content.js';
+import User from '../../models/user.js';
 
 export const getMedia = async (req, res) => {
     try {
@@ -73,6 +74,16 @@ export const uploadSerializedContent = async (req, res) => {
     } catch (err) {
         console.error("Error in uploadSerializedContent:", err);
         res.status(500).json({message: "Server error", error: err.message});
+    }
+}
+
+export const getSeries = async (req, res) => {
+    try {
+        const series = await Content.find({ seriesId: req.params.seriesId }).sort({ episodeNumber: 1 });
+        if (!series) return res.status(404).json({ message: "Series not found" });
+        res.json(series);
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -156,5 +167,15 @@ export const deleteMedia = async (req, res) => {
         res.status(200).json({message: "Media deleted successfully"});
     } catch (err) {
         res.status(500).json({message: "Server error", error: err.message});
+    }
+}
+
+export const getArtist = async (req, res) => {
+    try {
+        const artist = await User.findById(req.params.id);
+        if (!artist) return res.status(404).json({ message: "Artist not found" });
+        res.json({ artist });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
     }
 }
