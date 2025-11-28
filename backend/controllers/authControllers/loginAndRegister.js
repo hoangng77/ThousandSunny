@@ -27,6 +27,10 @@ export const registerUser = async(req, res) => {
           email: email.toString(),
           password: hashedPassword,
           role,
+          profile: {
+            avatarUrl: "/uploads/thousandSunny.jpg",
+            bio: "This is a bio",
+          },
         });
         
     await newUser.save();

@@ -2,6 +2,13 @@ import multer from "multer";
 import fs from "node:fs";
 import path from "node:path"
 
+const uploadPath = path.join(process.cwd(), "uploads");  // <-- absolute /uploads/
+
+// Ensure uploads directory exists
+if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+}
+
 const storage = multer.diskStorage({
     // Store uploaded files in a subdirectory named with the artist ID
     destination: (req, file, cb) => {
@@ -34,6 +41,7 @@ const upload = multer({
             return cb(new Error("Unsupported file type"), false);
         }
         cb(null, true);
-    },
+    }
 });
+
 export default upload;

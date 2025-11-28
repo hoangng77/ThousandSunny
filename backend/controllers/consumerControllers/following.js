@@ -17,7 +17,7 @@ export const followArtist = async (req, res) => {
   try {
     const { artistId } = req.params;
 
-    if (req.user._id.toString() === artistId) {
+    if (req.user.id.toString() === artistId) {
       return res.status(400).json({ message: "You cannot follow yourself" });
     }
 
@@ -27,7 +27,7 @@ export const followArtist = async (req, res) => {
     }
 
     const user = await User.findByIdAndUpdate(
-      req.user._id,
+      req.user.id,
       { $addToSet: { following: artistId } },
       { new: true }
     );
@@ -44,7 +44,7 @@ export const followArtist = async (req, res) => {
     const { artistId } = req.params;
 
     const user = await User.findByIdAndUpdate(
-      req.user._id,
+      req.user.id,
       { $pull: { following: artistId } },
       { new: true }
     );

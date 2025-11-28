@@ -8,11 +8,15 @@ export default function Upload() {
   const [description, setDescription] = useState("");
   const [genre, setGenre] = useState("");
   const [contentType, setContentType] = useState("single");
+
+  // Series fields
   const [seriesTitle, setSeriesTitle] = useState("");
   const [episodeNumber, setEpisodeNumber] = useState("");
   const [seriesId, setSeriesId] = useState("");
   const [isOriginalWork, setIsOriginalWork] = useState(false);
   
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,32 +29,55 @@ export default function Upload() {
       return;
     }
 
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
+    }
+    const isSeries = contentType === "series";
+
+    // Series validation
+    if (isSeries) {
+      if (!seriesTitle.trim()) {
+        alert("Series title is required for serialized content.");
+        return;
+      }
+      if (!episodeNumber || Number(episodeNumber) <= 0) {
+        alert("Please provide a valid episode number.");
+        return;
+      }
+      if (!seriesId.trim()) {
+        alert("Series ID is required for serialized content.");
+        return;
+      }
+    }
+
+    // Build the form
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("genre", genre);
 
-    const isSeries = contentType === "series";
-
     if (isSeries) {
       formData.append("seriesTitle", seriesTitle);
       formData.append("episodeNumber", episodeNumber);
-      if (seriesId) formData.append("seriesId", seriesId);
+      formData.append("seriesId", seriesId);
     }
 
     try {
       await uploadMedia(formData, isSeries);
       alert("Upload successful!");
 
-      // reset
+      // Reset
       setTitle("");
-      setFile(null);
       setDescription("");
       setGenre("");
+      setFile(null);
       setSeriesTitle("");
       setEpisodeNumber("");
       setSeriesId("");
+      setContentType("single");
+
     } catch (err) {
       console.error(err);
       alert("Upload failed");
@@ -59,10 +86,13 @@ export default function Upload() {
 
   return (
     <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow w-full max-w-md flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow w-full max-w-md flex flex-col gap-4"
+      >
         <h1 className="text-xl font-semibold">Upload Artwork</h1>
 
-        {/* Content Type */}
+        {/* Content type selection */}
         <div className="flex gap-4">
           <label className="flex items-center gap-2">
             <input 
@@ -85,13 +115,23 @@ export default function Upload() {
           </label>
         </div>
 
-        {/* Title */}
-        <input className="border p-2 rounded" type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        {/* Basic Inputs */}
+        <input
+          className="border p-2 rounded"
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-        {/* Description */}
-        <input className="border p-2 rounded" type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input
+          className="border p-2 rounded"
+          type="text"
+          placeholder="Description (optional)"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
 
-        {/* GENRE SELECTOR (dropdown) */}
         <select
           className="border p-2 rounded"
           value={genre}
@@ -99,25 +139,53 @@ export default function Upload() {
         >
           <option value="">Select Genre</option>
           {GENRES.map((g) => (
-            <option key={g} value={g}>{g}</option>
+            <option key={g} value={g}>
+              {g}
+            </option>
           ))}
         </select>
 
         {/* Series fields */}
         {contentType === "series" && (
           <>
-            <input className="border p-2 rounded" type="text" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} />
-            <input className="border p-2 rounded" type="number" placeholder="Episode Number" value={episodeNumber} onChange={(e) => setEpisodeNumber(e.target.value)} />
-            <input className="border p-2 rounded" type="text" placeholder="Series ID (optional)" value={seriesId} onChange={(e) => setSeriesId(e.target.value)} />
+            <input
+              className="border p-2 rounded"
+              type="text"
+              placeholder="Series Title (required)"
+              value={seriesTitle}
+              onChange={(e) => setSeriesTitle(e.target.value)}
+            />
+
+            <input
+              className="border p-2 rounded"
+              type="number"
+              placeholder="Episode Number (required)"
+              value={episodeNumber}
+              onChange={(e) => setEpisodeNumber(e.target.value)}
+            />
+
+            <input
+              className="border p-2 rounded"
+              type="text"
+              placeholder="Series ID (required)"
+              value={seriesId}
+              onChange={(e) => setSeriesId(e.target.value)}
+            />
           </>
         )}
 
-        {/* File Upload */}
-        <input className="border p-2 rounded" type="file" onChange={(e) => setFile(e.target.files[0])} />
+        {/* Upload File */}
+        <input
+          className="border p-2 rounded"
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
         <label>
           <input type="checkbox" onChange={(e) => setIsOriginalWork(e.target.checked)}/> I confirm that this is my original work.
         </label>
-        <button type="submit" className="bg-indigo-600 text-white py-2 rounded">Upload</button>
+        <button type="submit" className="bg-indigo-600 text-white py-2 rounded">
+          Upload
+        </button>
       </form>
     </div>
   );

@@ -8,14 +8,20 @@ export const uploadMedia = (data, isSeries = false) => {
     return API.post(endpoint, data);
 };
 
+export const getMedia = (id) =>
+  API.get(`/artist/content/${id}`);
+
 export const updateMedia = (id, data) =>
   API.put(`/artist/content/${id}`, data);
 
 export const deleteMedia = (id) =>
   API.delete(`/artist/content/${id}`);
 
-export const getPortfolio = () =>
-  API.get("/artist/portfolio");
+export const getPortfolio = (username) =>
+  API.get(`/portfolio/${username}`);
+
+export const updatePortfolio = (data) =>
+  API.put("/portfolio/edit-portfolio", data);
 
 export const getProgress = () =>
   API.get("/artist/progress");

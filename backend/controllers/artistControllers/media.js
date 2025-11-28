@@ -52,6 +52,9 @@ export const uploadSerializedContent = async (req, res) => {
         if (!episodeNumber || !seriesTitle) {
             return res.status(400).json({ message: "Episode number and series title are required" });
         }
+        if (!seriesId) {
+            return res.status(400).json({ message: "Series ID is required" });
+        }
 
         const media = new Content({
             artist: req.user._id,
@@ -61,7 +64,7 @@ export const uploadSerializedContent = async (req, res) => {
             fileUrl: req.file.path,
             status: 'published',
             contentType: 'series',
-            seriesId: seriesId || null,
+            seriesId: seriesId,
             episodeNumber,
             seriesTitle,
         });
@@ -131,6 +134,7 @@ export const getProgress = async (req, res) => {
   }
 };
 
+
 export const updateMedia = async (req, res) => {
     try {
         const media = await Content.findById(req.params._id);
@@ -145,6 +149,7 @@ export const updateMedia = async (req, res) => {
         await media.save();
         res.status(200).json({message: "Media updated successfully", media});
     } catch (err) {
+        console.log(err);
         res.status(500).json({message: "Server error", error: err.message});
     }
 }

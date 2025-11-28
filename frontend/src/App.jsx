@@ -12,6 +12,10 @@ import Register from "./pages/register";
 import Progress from "./pages/progress";
 import Following from "./pages/following";
 import Discover from "./pages/discover";
+import ProfileEdit from "./pages/profileEdit";
+import ForYou from "./pages/forYou";
+import EditMedia from "./pages/mediaEdit";
+import EditPortfolio from "./pages/portfolioEdit";
 import ArtPage from "./pages/art"
 
 function App() {
@@ -23,17 +27,21 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/discover" element={<Discover />} />
-          <Route path="/media/:id" element={<ArtPage />} />
+          <Route path="/foryou" element={<ForYou />} />
+          <Route path="/content/:id" element={<ArtPage />} />
 
 
           {/* Consumer-only pages */}
           <Route path="/library" element={<Library />} />
           <Route path="/following" element={<Following />} />
+          <Route path="/edit-profile/:username" element={<ProfileEdit />} />
 
           {/* Artist-only pages */}
-          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/:username" element={<Portfolio />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<Upload />} />
+          <Route path="/edit-media/:id" element={<EditMedia />} />
+          <Route path="/edit-portfolio/:username" element={<EditPortfolio />} />
 
           {/* Auth */}
           <Route path="/login" element={<Login />} />

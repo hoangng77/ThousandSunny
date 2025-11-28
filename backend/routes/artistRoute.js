@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 router.post("/upload", protect, upload.single("file"), uploadMedia);
-router.put("/content/:id", protect, updateMedia);
+router.put("/content/:id", protect, upload.single("file"), updateMedia);
 router.delete("/content/:id", protect, deleteMedia);
 router.get("/content/:id", getMedia);
 router.get("/portfolio", protect, getPortfolio);

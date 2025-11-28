@@ -11,6 +11,8 @@ import profileRoutes from "./routes/profileRoute.js";
 import artistRoutes from "./routes/artistRoute.js";
 import consumerRoutes from "./routes/consumerRoute.js";
 import discoverRoutes from "./routes/discoverRoute.js";
+import portfolioRoutes from "./routes/portfolioRoute.js";
+import forYouRoutes from "./routes/forYouRoute.js";
 
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
@@ -36,9 +38,11 @@ try {
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); 
 app.use("/auth", authRoutes);
 app.use("/profile", profileRoutes);
+app.use("/portfolio", portfolioRoutes);
 app.use("/artist", artistRoutes);
 app.use("/consumer", consumerRoutes);
 app.use("/discover", discoverRoutes);
+app.use("/for-you", forYouRoutes);
 
 // Error handling
 app.use((req, res) => {
