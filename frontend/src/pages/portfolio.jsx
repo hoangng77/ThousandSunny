@@ -94,26 +94,22 @@ export default function Portfolio() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {media.map((art) => (
-            <div key={art._id} className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition">
-              <img
-                src={`http://localhost:5000${art.fileUrl}`}
-                alt={art.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="font-semibold">{art.title}</h3>
-                <p className="text-sm text-gray-500">Genre: {art.genre}</p>
-                {art.contentType === "series" && (
-                  <p className="text-sm text-gray-600">Episode {art.episodeNumber}</p>
-                )}
-                <Link
-                  to={`/content/${art._id}`}
-                  className="mt-2 inline-block text-sm text-blue-600 hover:underline"
-                >
-                  View Artwork
-                </Link>
+            <a href={`/content/${art._id}`} key={art._id}>
+              <div className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition">
+                <img
+                  src={`http://localhost:5000${art.fileUrl}`}
+                  alt={art.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-3">
+                  <h3 className="font-semibold">{art.title}</h3>
+                  <p className="text-sm text-gray-500">Genre: {art.genre}</p>
+                  {art.contentType === "series" && (
+                    <p className="text-sm text-gray-600">Episode {art.episodeNumber}</p>
+                  )}
+                </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       )}

@@ -2,12 +2,12 @@ import express from "express";
 import { protect } from "../middleware/authentication.js";
 import upload  from "../middleware/upload.js";
 import { uploadMedia, updateMedia, deleteMedia, uploadSerializedContent, getProgress, getMedia } from "../controllers/artistControllers/media.js";
+import { getPortfolio } from "../controllers/artistControllers/portfolio.js";
 const router = express.Router();
 
 
 
 router.post("/upload", protect, upload.single("file"), uploadMedia);
-router.get("/content/:id", protect, getMedia);
 router.put("/content/:id", protect, upload.single("file"), updateMedia);
 router.delete("/content/:id", protect, deleteMedia);
 router.get("/content/:id", getMedia);

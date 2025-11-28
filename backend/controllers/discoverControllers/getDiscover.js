@@ -83,7 +83,7 @@ export const getDiscover = async (req, res) => {
     let userFollowing = [];
     if (req.user) {
       const user = await User.findById(req.user.id).select("following");
-      userFollowing = user.following.map((id) => id.toString());
+      userFollowing = user? user.following.map((id) => id.toString()) : [];
     }
 
     res.json({

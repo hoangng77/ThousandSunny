@@ -123,23 +123,6 @@ export const getProgress = async (req, res) => {
   }
 };
 
-export const getMedia = async (req, res) => {
-    try {
-        const media = await Content.findById(req.params.id);
-        console.log(media);
-        if (!media) {
-            return res.status(404).json({message: "Media not found"});
-        }
-        if (media.artist.toString() !== req.user.id) {
-            return res.status(403).json({message: "Unauthorized"});
-        }
-        res.status(200).json(media);
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({message: "Server error", error: err.message});
-    }
-}
 
 export const updateMedia = async (req, res) => {
     try {

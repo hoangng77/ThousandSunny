@@ -29,7 +29,7 @@ export default function ArtPage() {
     <div className="min-h-screen p-8 bg-gray-50 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">{media.title}</h1>
       <img
-        src={`http://localhost:5000/${media.fileUrl}`}
+        src={`http://localhost:5000${media.fileUrl}`}
         alt={media.title}
         className="max-w-3xl w-full rounded shadow mb-4"
       />

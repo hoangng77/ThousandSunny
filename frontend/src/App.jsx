@@ -28,7 +28,7 @@ function App() {
           <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/foryou" element={<ForYou />} />
-          <Route path="/media/:id" element={<ArtPage />} />
+          <Route path="/content/:id" element={<ArtPage />} />
 
 
           {/* Consumer-only pages */}
