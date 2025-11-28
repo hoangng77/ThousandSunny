@@ -21,7 +21,12 @@ const contentSchema = new mongoose.Schema({
   genre: { type: String, enum: GENRES, required: true },
   status: { type: String, default: "published" },
   contentType: { type: String, enum: ["single", "series"], default: "single" },
-  seriesId: { type: String, required: true },
+  seriesId: {
+    type: String,
+    required: function () {
+      return this.contentType === "series";
+    },
+  },
   episodeNumber: Number,
   seriesTitle: String,
   addedToLibraryCount: {
