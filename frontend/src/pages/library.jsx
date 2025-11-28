@@ -64,7 +64,7 @@ export default function Library() {
           <div key={item._id} className="bg-white p-4 rounded shadow">
             
             <img
-              src={`http://localhost:5000${item.content.fileUrl}`}
+              src={`http://localhost:5000/${item.content.fileUrl}`}
               alt={item?.content?.title || "Artwork"}
               className="w-full h-48 object-cover rounded"
             />

@@ -46,7 +46,7 @@ export default function Portfolio() {
       <div className="flex items-center gap-4 mb-4 justify-between">
         <div className="flex items-center gap-4">
           <img
-            src={artist.profile?.avatarUrl ? `http://localhost:5000${artist.profile.avatarUrl}` : "/default-avatar.png"}
+            src={artist.profile?.avatarUrl ? `http://localhost:5000/${artist.profile.avatarUrl}` : "uploads/default-avatar.png"}
             alt={artist.username}
             className="w-20 h-20 rounded-full object-cover"
           />
@@ -79,7 +79,7 @@ export default function Portfolio() {
           {followers.map(f => (
             <Link key={f._id} to={`/profile/${f.username}`} title={f.username}>
               <img
-                src={f.profile?.avatarUrl ? `http://localhost:5000${f.profile.avatarUrl}` : "/default-avatar.png"}
+                src={f.profile?.avatarUrl ? `http://localhost:5000/${f.profile.avatarUrl}` : "uploads/default-avatar.png"}
                 alt={f.username}
                 className="w-10 h-10 rounded-full object-cover border"
               />
@@ -97,7 +97,7 @@ export default function Portfolio() {
             <a href={`/content/${art._id}`} key={art._id}>
               <div className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition">
                 <img
-                  src={`http://localhost:5000${art.fileUrl}`}
+                  src={`http://localhost:5000/${art.fileUrl}`}
                   alt={art.title}
                   className="w-full h-48 object-cover"
                 />

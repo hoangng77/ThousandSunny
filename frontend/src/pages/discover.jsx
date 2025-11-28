@@ -123,7 +123,7 @@ export default function DiscoverPage() {
                 className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition"
               >
                 <img
-                  src={`http://localhost:5000${art.fileUrl}`}
+                  src={`http://localhost:5000/${art.fileUrl}`}
                   alt={art.title}
                   className="w-full h-48 object-cover"
                 />

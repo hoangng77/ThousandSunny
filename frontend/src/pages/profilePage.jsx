@@ -59,7 +59,7 @@ export default function ProfilePage() {
       {/* Profile header */}
       <section className="bg-white p-8 shadow rounded-lg text-center">
         <img
-          src={user.avatar ? `http://localhost:5000${user.avatar}` : "/default-avatar.png"}
+          src={user.avatar ? `http://localhost:5000/${user.avatar}` : "default-avatar.png"}
           className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border"
           alt="Profile"
         />
@@ -113,7 +113,7 @@ export default function ProfilePage() {
               <Card
                 key={item._id}
                 title={item.content?.title}
-                image={`http://localhost:5000${item.content.fileUrl}`}
+                image={`http://localhost:5000/${item.content.fileUrl}`}
               />
             ))}
           </div>

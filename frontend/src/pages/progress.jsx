@@ -104,7 +104,7 @@ export default function Progress() {
                             {/* Thumbnail */}
                             <div className="w-20">
                               <ProgressCard
-                                image={`http://localhost:5000${ep.fileUrl}`}
+                                image={`http://localhost:5000/${ep.fileUrl}`}
                                 title={ep.title}
                                 genre={s.genre}
                               />
@@ -168,7 +168,7 @@ export default function Progress() {
                   
                   {/* Artwork card */}
                   <ProgressCard
-                    image={`http://localhost:5000${art.fileUrl}`}
+                    image={`http://localhost:5000/${art.fileUrl}`}
                     title={art.title}
                     genre={art.genre}
                   />

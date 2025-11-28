@@ -41,7 +41,7 @@ export default function ForYou() {
             className="bg-white rounded shadow hover:shadow-lg transition overflow-hidden"
           >
             <img
-              src={`http://localhost:5000${art.fileUrl}`}
+              src={`http://localhost:5000/${art.fileUrl}`}
               alt={art.title}
               className="w-full h-48 object-cover"
             />

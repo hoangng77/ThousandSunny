@@ -18,7 +18,7 @@ export default function EditPortfolio() {
       setBio(user.profile?.bio || "");
       setAvatarPreview(
         user.profile?.avatarUrl
-          ? `http://localhost:5000${user.profile.avatarUrl}`
+          ? `http://localhost:5000/${user.profile.avatarUrl}`
           : null
       );
     }
