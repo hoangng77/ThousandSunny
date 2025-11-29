@@ -1,4 +1,6 @@
 import { useState } from "react";
+import React from "react";
+import { registerUser } from "../route/auth";
 
 export default function Register() {
   const [input, setInput] = useState({
@@ -18,15 +20,15 @@ export default function Register() {
     e.preventDefault();
     setStatus("submitting");
     setError(null);
-
+  
     try {
-      await submitRegistration(input);
+      await registerUser(input);
       setStatus("success");
     } catch (err) {
       setStatus("typing");
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Registration failed");
     }
-  };
+  };  
 
   if (status === "success")
     return (
@@ -107,15 +109,4 @@ export default function Register() {
       </form>
     </div>
   );
-}
-
-async function submitRegistration(input) {
-  const res = await fetch("http://localhost:5000/auth/register", {
-    method: "POST",
-    body: JSON.stringify(input),
-    headers: { "Content-Type": "application/json" },
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Registration failed");
-  return data;
 }

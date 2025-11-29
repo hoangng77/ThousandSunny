@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getPortfolio } from "../route/artist";
+import { getPortfolio } from "../route/portfolio";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/authProvider"; // make sure you have this
+import { AuthContext } from "../context/authProvider";
 
 export default function Portfolio() {
   const { username } = useParams();
   const navigate = useNavigate();
-  const { user: currentUser } = useContext(AuthContext); // logged-in user
+  const { user: currentUser } = useContext(AuthContext);
   const [artist, setArtist] = useState(null);
   const [media, setMedia] = useState([]);
   const [followers, setFollowers] = useState([]);
@@ -37,12 +37,10 @@ export default function Portfolio() {
     return <div className="text-center mt-20 text-red-600">Artist not found.</div>;
   }
 
-  // Only show edit button if current user is the artist
   const canEdit = currentUser && currentUser.id === artist._id;
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      {/* Artist Header */}
       <div className="flex items-center gap-4 mb-4 justify-between">
         <div className="flex items-center gap-4">
           <img
@@ -62,7 +60,6 @@ export default function Portfolio() {
           </div>
         </div>
 
-        {/* Edit Portfolio Button (only for the artist themselves) */}
         {canEdit && (
           <button
             onClick={() => navigate(`/edit-portfolio/${artist.username}`)}
@@ -73,7 +70,6 @@ export default function Portfolio() {
         )}
       </div>
 
-      {/* Followers Avatars */}
       {followers.length > 0 && (
         <div className="flex items-center gap-2 mb-6">
           {followers.map(f => (
@@ -107,7 +103,7 @@ export default function Portfolio() {
                   <p className="text-sm text-gray-600">Episode {art.episodeNumber}</p>
                 )}
                 <Link
-                  to={`/content/${art._id}`}
+                  to={`/art/${art._id}`}
                   className="mt-2 inline-block text-sm text-blue-600 hover:underline"
                 >
                   View Artwork

@@ -32,28 +32,20 @@ export const getPortfolio = async (req, res) => {
 
 export const updatePortfolio = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { bio } = req.body;
+    const user = await User.findById(req.user.id);
 
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    if (bio !== undefined) user.profile.bio = bio;
+    if (req.body.bio) {
+      user.profile.bio = req.body.bio;
+    }
 
     if (req.file) {
-      const avatarPath = `/uploads/${req.file.filename}`;
-
-      user.profile.avatarUrl = avatarPath;
+      user.profile.avatarUrl = `/uploads/${req.file.filename}`;
     }
 
     await user.save();
-
-    res.status(200).json({
-      message: "Portfolio updated successfully",
-      profile: user.profile,
-    });
+    res.json({ user });
   } catch (err) {
-    console.error("editPortfolio error:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error(err);
+    res.status(500).json({ message: err.message });
   }
 };

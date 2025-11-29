@@ -3,7 +3,6 @@ import Hero from "../components/hero";
 import { Link } from "react-router-dom";
 
 export default function Home() {
-  // Get today’s date in a nice readable format
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",

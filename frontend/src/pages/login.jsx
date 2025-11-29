@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
+import { loginUser } from "../route/auth";
 
 export default function Login() {
   const [input, setInput] = useState({ email: "", password: "" });
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { login } = React.useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -19,11 +20,10 @@ export default function Login() {
     setError(null);
 
     try {
-      const data = await loginToAccount(input);
+      const { data } = await loginUser(input);
 
       login(data.user);
       localStorage.setItem("token", data.token);
-      localStorage.setItem("role", JSON.stringify(data.role));
       setStatus("success");
     } catch (err) {
       setStatus("typing");
@@ -41,7 +41,7 @@ export default function Login() {
   if (status === "success") {
     return (
       <h1 className="text-center mt-20 text-2xl">
-        Login Successful 🎉 Redirecting...
+        Login Successful 🎉 Redirecting ...
       </h1>
     );
   }
@@ -77,7 +77,6 @@ export default function Login() {
         </button>
         {error && <p className="text-red-500 text-center">{error}</p>}
 
-        {/* New registration link */}
         <p className="text-center text-gray-600 mt-2">
           Don't have an account?{" "}
           <Link
@@ -90,15 +89,4 @@ export default function Login() {
       </form>
     </div>
   );
-}
-
-async function loginToAccount(input) {
-  const res = await fetch("http://localhost:5000/auth/login", {
-    method: "POST",
-    body: JSON.stringify(input),
-    headers: { "Content-Type": "application/json" },
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Login failed");
-  return data;
 }

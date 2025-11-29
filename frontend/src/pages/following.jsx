@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getFollowing, followArtist, unfollowArtist } from "../route/consumer"; // your route helpers
+import { getFollowing, followArtist, unfollowArtist } from "../route/consumer";
 
 export default function FollowingPage() {
   const [following, setFollowing] = useState([]);
@@ -22,7 +22,6 @@ export default function FollowingPage() {
     fetchFollowing();
   }, []);
 
-  // Follow / Unfollow button handler
   const toggleFollow = async (artistId, isFollowing) => {
     try {
       if (isFollowing) {
@@ -30,7 +29,7 @@ export default function FollowingPage() {
       } else {
         await followArtist(artistId);
       }
-      fetchFollowing(); // refresh list
+      fetchFollowing();
     } catch (err) {
       console.error(err);
     }

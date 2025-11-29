@@ -8,7 +8,7 @@ export const getLibrary = async (req, res) => {
         path: "library.content",
         populate: {
           path: "artist",
-          select: "username profile.avatarUrl"  // only needed fields
+          select: "username profile.avatarUrl" 
         }
       });
 
@@ -72,6 +72,7 @@ export const removeFromLibrary = async (req, res) => {
 
     if (!content) return res.status(404).json({ message: "Content not found" });
 
+    // Remove from library
     const beforeLength = user.library.length;
     user.library = user.library.filter(
       item => item.content.toString() !== contentId
@@ -81,18 +82,27 @@ export const removeFromLibrary = async (req, res) => {
       return res.status(400).json({ message: "Not found in library" });
     }
 
+    // Decrement content's addedToLibraryCount
     if (content.addedToLibraryCount > 0) {
       content.addedToLibraryCount -= 1;
+    }
+
+    // Adjust preferredGenres
+    const genreIndex = user.preferredGenres.findIndex(g => g.genre === content.genre);
+    if (genreIndex >= 0) {
+      user.preferredGenres[genreIndex].count -= 1;
+      // Remove genre if count reaches 0
+      if (user.preferredGenres[genreIndex].count <= 0) {
+        user.preferredGenres.splice(genreIndex, 1);
+      }
     }
 
     await user.save();
     await content.save();
 
     res.json({ library: user.library });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error });
   }
 };
-

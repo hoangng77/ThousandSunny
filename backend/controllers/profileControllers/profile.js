@@ -9,7 +9,6 @@ export const getProfile = async (req, res) => {
     select: "title fileUrl genre"
   });
   const libraryArtworks = user.library.map(l => l.content);
-    console.log(user);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json({ user, libraryArtworks });
@@ -22,8 +21,6 @@ export const getProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-
-    console.log(req.body.bio);
 
     if (req.body.bio) {
       user.profile.bio = req.body.bio;

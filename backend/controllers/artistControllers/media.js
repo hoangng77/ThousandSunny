@@ -16,7 +16,7 @@ export const uploadMedia = async (req, res) => {
             title,
             description,
             genre,
-            fileUrl: req.file.path, // Save the file path from multer
+            fileUrl: `/uploads/${req.file.filename}`,
             status: 'published',
         });
         
@@ -50,7 +50,7 @@ export const uploadSerializedContent = async (req, res) => {
             title,
             description,
             genre,
-            fileUrl: req.file.path,
+            fileUrl: `/uploads/${req.file.filename}`, // could fix this
             status: 'published',
             contentType: 'series',
             seriesId: seriesId,
@@ -97,6 +97,7 @@ export const getProgress = async (req, res) => {
           fileUrl: item.fileUrl,
           createdAt: item.createdAt
         });
+        seriesMap[seriesId].episodes.sort((a, b) => a.episodeNumber - b.episodeNumber);
       }
     });
 
@@ -115,13 +116,9 @@ export const getProgress = async (req, res) => {
 
 export const getMedia = async (req, res) => {
     try {
-        const media = await Content.findById(req.params.id);
-        console.log(media);
+        const media = await Content.findById(req.params.id).populate("artist", "username profile.avatarUrl");
         if (!media) {
             return res.status(404).json({message: "Media not found"});
-        }
-        if (media.artist.toString() !== req.user.id) {
-            return res.status(403).json({message: "Unauthorized"});
         }
         res.status(200).json(media);
     }

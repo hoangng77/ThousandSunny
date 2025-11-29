@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProfile } from "../route/profile";
 import { Card } from "../components/card";
-import { AuthContext } from "../context/authProvider"; // import context
+import { AuthContext } from "../context/authProvider";
 
-export default function ProfilePage() {
+export default function Profile() {
   const { username } = useParams();
-  const { user: currentUser } = useContext(AuthContext); // logged-in user
+  const { user: currentUser } = useContext(AuthContext);
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,11 +52,10 @@ export default function ProfilePage() {
   if (notFound) return <div className="text-center mt-20 text-red-600">Profile Not Found</div>;
   if (error) return <div className="text-center mt-20 text-red-600">{error}</div>;
 
-  const isOwnProfile = currentUser?.username === username; // check ownership
+  const isOwnProfile = currentUser?.username === username;
 
   return (
     <div className="px-6 py-8">
-      {/* Profile header */}
       <section className="bg-white p-8 shadow rounded-lg text-center">
         <img
           src={user.avatar ? `http://localhost:5000${user.avatar}` : "/default-avatar.png"}
@@ -81,7 +80,6 @@ export default function ProfilePage() {
         )}
       </section>
 
-      {/* Preferred Genres */}
       <section className="mt-10">
         <h2 className="text-2xl font-semibold mb-3">Preferred Genres</h2>
 
@@ -101,7 +99,6 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      {/* Library by Genre */}
       <section className="mt-10">
         <h2 className="text-2xl font-semibold mb-4">Library</h2>
 
@@ -110,11 +107,15 @@ export default function ProfilePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {user.library.map((item) => (
-              <Card
+              <Link
                 key={item._id}
-                title={item.content?.title}
-                image={`http://localhost:5000${item.content.fileUrl}`}
-              />
+                to={`/art/${item.content._id}`}
+              >
+                <Card
+                  title={item.content?.title}
+                  image={`http://localhost:5000${item.content.fileUrl}`}
+                />
+              </Link>
             ))}
           </div>
         )}

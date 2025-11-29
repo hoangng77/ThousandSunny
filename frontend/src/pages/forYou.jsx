@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import API from "../route/index";
 import { Link } from "react-router-dom";
+import { getForYou } from "../route/foryou";
 
 export default function ForYou() {
   const [items, setItems] = useState([]);
@@ -8,7 +8,7 @@ export default function ForYou() {
 
   const loadForYou = async () => {
     try {
-      const res = await API.get("/for-you");
+      const res = await getForYou();
       setItems(res.data.recommended || []);
     } catch (err) {
       console.error(err);
@@ -36,19 +36,22 @@ export default function ForYou() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {items.map((art) => (
-          <div
-            key={art._id}
-            className="bg-white rounded shadow hover:shadow-lg transition overflow-hidden"
-          >
-            <img
-              src={`http://localhost:5000${art.fileUrl}`}
-              alt={art.title}
-              className="w-full h-48 object-cover"
-            />
+          <div key={art._id} className="bg-white rounded shadow hover:shadow-lg transition overflow-hidden">
+            <Link to={`/art/${art._id}`}>
+              <img
+                src={`http://localhost:5000${art.fileUrl}`}
+                alt={art.title}
+                className="w-full h-48 object-cover"
+              />
+            </Link>
 
             <div className="p-3">
               <h2 className="font-semibold">{art.title}</h2>
-
+              {art.contentType === "series" && (
+                <p className="text-sm text-gray-500">
+                  Series: {art.seriesTitle} • Episode {art.episodeNumber}
+                </p>
+              )}
               <p className="text-sm text-gray-500">Genre: {art.genre}</p>
 
               <Link

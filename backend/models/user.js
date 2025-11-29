@@ -8,12 +8,6 @@ const userSchema = new mongoose.Schema({
   profile: {
     bio: String,
     avatarUrl: String,
-    socialLinks: {
-      instagram: String,
-      twitter: String,
-      facebook: String,
-      website: String,
-    },
   },
   library: [{ content: { type: mongoose.Schema.Types.ObjectId, ref: "Content" } }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

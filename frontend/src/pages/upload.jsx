@@ -1,56 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { uploadMedia } from "../route/artist";
-import { GENRES } from "../../constant/genres";
 
 export default function Upload() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [genre, setGenre] = useState("");
   const [contentType, setContentType] = useState("single");
 
-  // Series fields
   const [seriesTitle, setSeriesTitle] = useState("");
   const [episodeNumber, setEpisodeNumber] = useState("");
   const [seriesId, setSeriesId] = useState("");
+
+  const GENRES = [
+    "Fantasy","Romance","Horror","Action","Comedy",
+    "Drama","Sci-Fi","Mystery","Slice of Life","Adventure",
+  ];
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const qSeriesId = params.get("seriesId");
+    const qSeriesTitle = params.get("seriesTitle");
+    const qGenre = params.get("genre");
+
+    if (qSeriesId) {
+      setContentType("series");
+      setSeriesId(qSeriesId);
+      if (qSeriesTitle) setSeriesTitle(qSeriesTitle);
+      if (qGenre) setGenre(qGenre);
+    }
+  }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isSeries = contentType === "series";
 
-    // Basic validation
-    if (!title.trim()) {
-      alert("Please enter a title.");
-      return;
-    }
+    if (!title.trim()) return alert("Please enter a title.");
+    if (!genre) return alert("Please select a genre.");
+    if (!file) return alert("Please select a file.");
 
-    if (!genre) {
-      alert("Please select a genre.");
-      return;
-    }
-
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
-
-    // Series validation
     if (isSeries) {
-      if (!seriesTitle.trim()) {
-        alert("Series title is required for serialized content.");
-        return;
-      }
-      if (!episodeNumber || Number(episodeNumber) <= 0) {
-        alert("Please provide a valid episode number.");
-        return;
-      }
-      if (!seriesId.trim()) {
-        alert("Series ID is required for serialized content.");
-        return;
-      }
+      if (!seriesTitle.trim()) return alert("Series title is required.");
+      if (!episodeNumber || Number(episodeNumber) <= 0)
+        return alert("Provide a valid episode number.");
+      if (!seriesId.trim()) return alert("Series ID is required.");
     }
 
-    // Build the form
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
@@ -66,17 +65,7 @@ export default function Upload() {
     try {
       await uploadMedia(formData, isSeries);
       alert("Upload successful!");
-
-      // Reset
-      setTitle("");
-      setDescription("");
-      setGenre("");
-      setFile(null);
-      setSeriesTitle("");
-      setEpisodeNumber("");
-      setSeriesId("");
-      setContentType("single");
-
+      navigate("/progress"); // redirect to progress
     } catch (err) {
       console.error(err);
       alert("Upload failed");
@@ -91,7 +80,6 @@ export default function Upload() {
       >
         <h1 className="text-xl font-semibold">Upload Artwork</h1>
 
-        {/* Content type selection */}
         <div className="flex gap-4">
           <label className="flex items-center gap-2">
             <input
@@ -114,7 +102,6 @@ export default function Upload() {
           </label>
         </div>
 
-        {/* Basic Inputs */}
         <input
           className="border p-2 rounded"
           type="text"
@@ -144,7 +131,6 @@ export default function Upload() {
           ))}
         </select>
 
-        {/* Series fields */}
         {contentType === "series" && (
           <>
             <input
@@ -173,7 +159,6 @@ export default function Upload() {
           </>
         )}
 
-        {/* Upload File */}
         <input
           className="border p-2 rounded"
           type="file"

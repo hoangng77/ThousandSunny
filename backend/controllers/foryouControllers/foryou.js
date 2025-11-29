@@ -7,22 +7,19 @@ export const getForYou = async (req, res) => {
     const user = await User.findById(req.user.id).select("preferredGenres following");
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Sort preferred genres by count descending
     const sortedGenres = [...user.preferredGenres].sort((a, b) => b.count - a.count);
 
     const genres = sortedGenres.map(g => g.genre);
     const followingIds = user.following.map(id => new mongoose.Types.ObjectId(id));
 
-    // Build match conditions
     const match = {
       status: "published",
-      genre: { $in: genres }, // top preference
+      genre: { $in: genres },
     };
 
     const artworks = await Content.aggregate([
       { $match: match },
 
-      // lookup artist info
       {
         $lookup: {
           from: "users",
@@ -33,7 +30,6 @@ export const getForYou = async (req, res) => {
       },
       { $unwind: "$artistInfo" },
 
-      // compute priority score
       {
         $addFields: {
           matchGenreIndex: {
@@ -45,7 +41,6 @@ export const getForYou = async (req, res) => {
         }
       },
 
-      // priority sorting
       {
         $sort: {
           isFollowedArtist: -1,
@@ -64,6 +59,8 @@ export const getForYou = async (req, res) => {
           genre: 1,
           contentType: 1,
           episodeNumber: 1,
+          seriesTitle: 1,
+          seriesId: 1, 
           createdAt: 1,
           addedToLibraryCount: 1,
           artistInfo: {

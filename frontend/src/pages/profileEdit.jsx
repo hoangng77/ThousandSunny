@@ -1,34 +1,34 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { updateProfile } from "../route/profile";
 
 export default function ProfileEdit() {
-  const { user, setUser } = useContext(AuthContext);
   const { username } = useParams();
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
 
-  // HOOKS FIRST: always run
+  // Hooks
+  const [bio, setBio] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [bio, setBio] = useState("");
 
-  // Initialize form data
+  // Load form
   useEffect(() => {
     if (user) {
       setBio(user.profile?.bio || "");
-      setAvatarPreview(user.profile?.avatarUrl || null);
+
+      const url = user.profile?.avatarUrl;
+      setAvatarPreview(`http://localhost:5000${url}`);
     }
   }, [user]);
 
-  // Early returns after hooks
-  if (!user) {
-    return <div className="p-10">Loading...</div>;
-  }
-
-  if (user.username !== username) {
+  // Guards
+  if (!user) return <div className="p-10">Loading...</div>;
+  if (user.username !== username)
     return <div className="p-10 text-red-600">Unauthorized to edit this profile.</div>;
-  }
 
+  // Handlers
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -44,15 +44,20 @@ export default function ProfileEdit() {
 
     try {
       const res = await updateProfile(formData);
-      alert("Profile updated!");
+
+      const updated = res.data.user.profile;
+
       setUser((prev) => ({
         ...prev,
         profile: {
           ...prev.profile,
-          bio: res.data.bio,
-          avatarUrl: res.data.avatarUrl,
+          bio: updated.bio,
+          avatarUrl: updated.avatarUrl,
         },
       }));
+
+      alert("Profile updated!");
+      navigate(`/profile/${username}`);
     } catch (err) {
       console.error(err);
       alert("Failed to update profile.");
@@ -68,7 +73,7 @@ export default function ProfileEdit() {
         <label className="block font-medium mb-2">Avatar</label>
         <img
           src={avatarPreview || "/default-avatar.png"}
-          alt="Avatar preview"
+          alt="avatar"
           className="w-28 h-28 rounded-full object-cover mb-3 border"
         />
         <input type="file" accept="image/*" onChange={handleAvatarChange} />

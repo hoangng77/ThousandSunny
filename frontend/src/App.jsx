@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/homePage";
 import Navbar from "./components/navBar";
-import ProfilePage from "./pages/profilePage";
+import Profile from "./pages/profile";
 import Portfolio from "./pages/portfolio";
 import Dashboard from "./pages/dashboard";
 import Upload from "./pages/upload";
@@ -14,8 +14,9 @@ import Following from "./pages/following";
 import Discover from "./pages/discover";
 import ProfileEdit from "./pages/profileEdit";
 import ForYou from "./pages/forYou";
-import EditMedia from "./pages/mediaEdit";
-import EditPortfolio from "./pages/portfolioEdit";
+import MediaEdit from "./pages/mediaEdit";
+import PortfolioEdit from "./pages/portfolioEdit";
+import ArtPage from "./pages/art"
 
 function App() {
   return (
@@ -24,9 +25,11 @@ function App() {
       <div className="pt-16 px-6 h-screen w-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/profile/:username" element={<Profile />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/foryou" element={<ForYou />} />
+          <Route path="/art/:id" element={<ArtPage />} />
+          
 
           {/* Consumer-only pages */}
           <Route path="/library" element={<Library />} />
@@ -37,8 +40,8 @@ function App() {
           <Route path="/portfolio/:username" element={<Portfolio />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<Upload />} />
-          <Route path="/edit-media/:id" element={<EditMedia />} />
-          <Route path="/edit-portfolio/:username" element={<EditPortfolio />} />
+          <Route path="/edit-media/:id" element={<MediaEdit />} />
+          <Route path="/edit-portfolio/:username" element={<PortfolioEdit />} />
 
           {/* Auth */}
           <Route path="/login" element={<Login />} />

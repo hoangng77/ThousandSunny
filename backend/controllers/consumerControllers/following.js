@@ -17,10 +17,6 @@ export const followArtist = async (req, res) => {
   try {
     const { artistId } = req.params;
 
-    if (req.user.id.toString() === artistId) {
-      return res.status(400).json({ message: "You cannot follow yourself" });
-    }
-
     const artist = await User.findById(artistId);
     if (!artist || artist.role !== "artist") {
       return res.status(404).json({ message: "Artist not found" });

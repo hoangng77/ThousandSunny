@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middleware/authentication.js";
-import { getPortfolio, updatePortfolio } from "../controllers/artistControllers/portfolio.js";
+import { getPortfolio, updatePortfolio } from "../controllers/portfolioControllers/portfolio.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();

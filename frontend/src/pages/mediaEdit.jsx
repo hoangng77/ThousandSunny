@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateMedia, getMedia } from "../route/artist";
 
-export default function EditMedia() {
+export default function MediaEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -53,7 +53,6 @@ export default function EditMedia() {
     loadArtwork();
   }, [id]);
 
-  // Handle text/select fields
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -62,11 +61,10 @@ export default function EditMedia() {
     setFile(e.target.files[0]);
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess(""); // reset success message
+    setSuccess("");
 
     try {
       const formData = new FormData();
@@ -80,14 +78,11 @@ export default function EditMedia() {
 
       await updateMedia(id, formData);
 
-      // Show success notification
       setSuccess("Artwork updated successfully!");
 
-      // Optional: auto-hide notification after 3 seconds
       setTimeout(() => setSuccess(""), 3000);
 
-      // Optionally navigate back after update
-      // navigate("/portfolio/me");
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
       setError("Failed to update artwork");
@@ -117,7 +112,6 @@ export default function EditMedia() {
           />
         </div>
 
-        {/* Description */}
         <div>
           <label className="block font-medium mb-1">Description</label>
           <textarea
@@ -129,7 +123,6 @@ export default function EditMedia() {
           />
         </div>
 
-        {/* Genre */}
         <div>
           <label className="block font-medium mb-1">Genre</label>
           <select
@@ -148,7 +141,6 @@ export default function EditMedia() {
           </select>
         </div>
 
-        {/* File Upload */}
         <div>
           <label className="block font-medium mb-1">Replace Media (optional)</label>
           <input

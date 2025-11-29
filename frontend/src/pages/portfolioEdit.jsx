@@ -1,42 +1,34 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
-import { updatePortfolio } from "../route/artist";
+import { updatePortfolio } from "../route/portfolio";
 
-export default function EditPortfolio() {
-  const { user, setUser } = useContext(AuthContext);
+export default function PortfolioEdit() {
   const { username } = useParams();
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
 
-  // HOOKS
+  const [bio, setBio] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [bio, setBio] = useState("");
 
-  // Load current profile info into form
   useEffect(() => {
     if (user) {
       setBio(user.profile?.bio || "");
-      setAvatarPreview(
-        user.profile?.avatarUrl
-          ? `http://localhost:5000${user.profile.avatarUrl}`
-          : null
-      );
+
+      const url = user.profile?.avatarUrl;
+      setAvatarPreview(`http://localhost:5000${url}`);
     }
   }, [user]);
 
-  // 1. Wait for Auth
   if (!user) return <div className="p-10">Loading...</div>;
-
-  // 2. Permission check
-  if (user.username !== username) {
+  if (user.username !== username)
     return (
       <div className="p-10 text-red-600">
-        You are not allowed to edit this artist’s portfolio.
+        Unauthorized to edit this artist’s portfolio.
       </div>
     );
-  }
 
-  // Avatar handler
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -45,7 +37,6 @@ export default function EditPortfolio() {
     }
   };
 
-  // Save button handler
   const handleSave = async () => {
     const formData = new FormData();
     formData.append("bio", bio);
@@ -54,17 +45,19 @@ export default function EditPortfolio() {
     try {
       const res = await updatePortfolio(formData);
 
-      alert("Portfolio updated!");
+      const updated = res.data.user.profile;
 
-      // update local user context
       setUser((prev) => ({
         ...prev,
         profile: {
           ...prev.profile,
-          bio: res.data.profile.bio,
-          avatarUrl: res.data.profile.avatarUrl,
+          bio: updated.bio,
+          avatarUrl: updated.avatarUrl,
         },
       }));
+
+      alert("Portfolio updated!");
+      navigate(`/portfolio/${username}`);
     } catch (err) {
       console.error(err);
       alert("Error updating portfolio.");
@@ -75,20 +68,16 @@ export default function EditPortfolio() {
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Edit Portfolio</h1>
 
-      {/* Avatar Upload */}
       <div className="mb-6">
         <label className="block font-medium mb-2">Profile Picture</label>
-
         <img
           src={avatarPreview || "/default-avatar.png"}
-          alt="Preview"
+          alt="avatar"
           className="w-28 h-28 rounded-full object-cover mb-3 border"
         />
-
         <input type="file" accept="image/*" onChange={handleAvatarChange} />
       </div>
 
-      {/* Bio */}
       <div className="mb-6">
         <label className="block font-medium mb-2">Bio</label>
         <textarea
@@ -99,7 +88,6 @@ export default function EditPortfolio() {
         />
       </div>
 
-      {/* Save Button */}
       <button
         onClick={handleSave}
         className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

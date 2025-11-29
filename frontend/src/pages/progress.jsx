@@ -10,11 +10,9 @@ export default function Progress() {
 
   const [series, setSeries] = useState([]);
   const [singles, setSingles] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch progress when user is ready
   useEffect(() => {
     if (!user) return;
     fetchProgress();
@@ -24,7 +22,6 @@ export default function Progress() {
     try {
       const res = await getProgress();
       const data = res.data;
-
       setSeries(data.series || []);
       setSingles(data.singles || []);
     } catch (err) {
@@ -35,14 +32,12 @@ export default function Progress() {
     }
   };
 
-  // Delete handler (episodes + single artworks share same API)
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
 
     try {
       await deleteMedia(id);
 
-      // Remove from both lists
       setSingles((prev) => prev.filter((item) => item._id !== id));
 
       setSeries((prevSeries) =>
@@ -64,7 +59,6 @@ export default function Progress() {
     <div className="min-h-screen px-6 py-10 bg-gray-50">
       <div className="max-w-6xl mx-auto space-y-12">
 
-        {/* ====== SERIES SECTION ====== */}
         <section>
           <h1 className="text-3xl font-bold mb-6">Serialized Content</h1>
 
@@ -79,7 +73,6 @@ export default function Progress() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {series.map((s) => (
                 <div key={s._id} className="bg-white rounded-xl shadow-md p-6">
-                  {/* Series Header */}
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-2xl font-semibold">{s.seriesTitle}</h2>
                     <span className="text-sm bg-indigo-200 text-indigo-800 px-3 py-1 rounded-md">
@@ -87,9 +80,6 @@ export default function Progress() {
                     </span>
                   </div>
 
-                  <p className="text-gray-600 mb-6">{s.description}</p>
-
-                  {/* ========= EPISODES ========= */}
                   <div className="space-y-4">
                     {s.episodes.length === 0 ? (
                       <p className="text-gray-500 text-sm">No episodes yet.</p>
@@ -101,7 +91,6 @@ export default function Progress() {
                             key={ep._id}
                             className="flex items-center gap-4 p-3 rounded-lg border bg-gray-50 relative group"
                           >
-                            {/* Thumbnail */}
                             <div className="w-20">
                               <ProgressCard
                                 image={`http://localhost:5000${ep.fileUrl}`}
@@ -110,7 +99,6 @@ export default function Progress() {
                               />
                             </div>
 
-                            {/* Episode info */}
                             <div>
                               <p className="font-medium">
                                 Episode {ep.episodeNumber}: {ep.title}
@@ -120,9 +108,7 @@ export default function Progress() {
                               </p>
                             </div>
 
-                            {/* Edit/Delete buttons */}
                             <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-
                               <button
                                 onClick={() => navigate(`/edit-media/${ep._id}`)}
                                 className="bg-yellow-500 text-white text-xs px-2 py-1 rounded shadow hover:bg-yellow-600"
@@ -136,7 +122,6 @@ export default function Progress() {
                               >
                                 Remove
                               </button>
-
                             </div>
                           </div>
                         ))
@@ -144,7 +129,9 @@ export default function Progress() {
                   </div>
 
                   <a
-                    href="/upload"
+                    href={`/upload?seriesId=${s._id}&seriesTitle=${encodeURIComponent(
+                      s.seriesTitle
+                    )}&genre=${encodeURIComponent(s.genre)}`}
                     className="mt-4 inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
                   >
                     Add Episode
@@ -155,7 +142,6 @@ export default function Progress() {
           )}
         </section>
 
-        {/* ====== SINGLE ARTWORKS ====== */}
         <section>
           <h1 className="text-3xl font-bold mb-6">Your Artworks</h1>
 
@@ -165,17 +151,13 @@ export default function Progress() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
               {singles.map((art) => (
                 <div key={art._id} className="relative group">
-                  
-                  {/* Artwork card */}
                   <ProgressCard
                     image={`http://localhost:5000${art.fileUrl}`}
                     title={art.title}
                     genre={art.genre}
                   />
 
-                  {/* Edit/Delete overlay */}
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-
                     <button
                       onClick={() => navigate(`/edit-media/${art._id}`)}
                       className="bg-yellow-500 text-white text-xs px-2 py-1 rounded shadow hover:bg-yellow-600"
@@ -189,14 +171,12 @@ export default function Progress() {
                     >
                       Remove
                     </button>
-
                   </div>
                 </div>
               ))}
             </div>
           )}
         </section>
-
       </div>
     </div>
   );
