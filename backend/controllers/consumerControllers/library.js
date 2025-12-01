@@ -1,6 +1,6 @@
 import User from "../../models/user.js";
 import Content from "../../models/content.js";
-
+// Get the user's library
 export const getLibrary = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
@@ -20,7 +20,7 @@ export const getLibrary = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
+// Add content to the user's library
 export const addToLibrary = async (req, res) => {
   try {
     const { contentId } = req.params;
@@ -62,7 +62,7 @@ export const addToLibrary = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
+// Remove content from the user's library
 export const removeFromLibrary = async (req, res) => {
   try {
     const { contentId } = req.params;

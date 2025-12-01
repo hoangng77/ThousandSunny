@@ -1,5 +1,5 @@
 import API from "./index";
-
+// Consumer Routes
 export const getLibrary = () => API.get(`/consumer/library`);
 export const addToLibrary = (contentId) => API.post(`/consumer/library/${contentId}`);
 export const removeFromLibrary = (contentId) => API.delete(`/consumer/library/${contentId}`);

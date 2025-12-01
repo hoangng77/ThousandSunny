@@ -25,27 +25,24 @@ function App() {
       <div className="pt-16 px-6 h-screen w-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile/:username" element={<Profile />} />
+          { /* Authentication Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          { /* General Routes */}
           <Route path="/discover" element={<Discover />} />
           <Route path="/foryou" element={<ForYou />} />
           <Route path="/art/:id" element={<ArtPage />} />
-          
-
-          {/* Consumer-only pages */}
+          <Route path="/dashboard" element={<Dashboard />} />
+           { /* Consumer Routes */}
           <Route path="/library" element={<Library />} />
           <Route path="/following" element={<Following />} />
+          <Route path="/profile/:username" element={<Profile />} />
           <Route path="/edit-profile/:username" element={<ProfileEdit />} />
-
-          {/* Artist-only pages */}
+          { /* Artist Routes */}
           <Route path="/portfolio/:username" element={<Portfolio />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/edit-media/:id" element={<MediaEdit />} />
           <Route path="/edit-portfolio/:username" element={<PortfolioEdit />} />
-
-          {/* Auth */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/progress" element={<Progress />} />
         </Routes>
       </div>

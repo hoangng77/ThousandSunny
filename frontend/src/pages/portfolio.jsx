@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { getPortfolio } from "../route/portfolio";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
-
+// Portfolio Page Component
 export default function Portfolio() {
   const { username } = useParams();
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export default function Portfolio() {
   const [media, setMedia] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  // Load portfolio data
   useEffect(() => {
     async function loadPortfolio() {
       try {
@@ -28,7 +28,7 @@ export default function Portfolio() {
 
     if (username) loadPortfolio();
   }, [username]);
-
+  // Render loading, error, or portfolio content
   if (loading) {
     return <div className="text-center mt-20 text-gray-600">Loading portfolio…</div>;
   }
@@ -38,7 +38,7 @@ export default function Portfolio() {
   }
 
   const canEdit = currentUser && currentUser.id === artist._id;
-
+  // Render portfolio page
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex items-center gap-4 mb-4 justify-between">

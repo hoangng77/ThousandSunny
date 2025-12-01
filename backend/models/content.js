@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Define genres
 const GENRES = [
   "Fantasy",
   "Romance",
@@ -12,7 +12,7 @@ const GENRES = [
   "Slice of Life",
   "Adventure",
 ];
-
+// Define Content schema
 const contentSchema = new mongoose.Schema({
   artist: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   title: String,
@@ -34,5 +34,5 @@ const contentSchema = new mongoose.Schema({
     default: 0,
   }
 }, { timestamps: true });
-
+// Export Content model
 export default mongoose.model("Content", contentSchema);

@@ -1,5 +1,5 @@
 import User from "../../models/user.js";
-
+// Get user profile
 export const getProfile = async (req, res) => {
   try {
     const user = await User.findOne( req.params )
@@ -17,7 +17,7 @@ export const getProfile = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
+// Update user profile
 export const updateProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

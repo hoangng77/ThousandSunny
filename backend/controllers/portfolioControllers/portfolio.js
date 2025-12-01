@@ -1,6 +1,6 @@
 import User from "../../models/user.js";
 import Content from "../../models/content.js";
-
+// Get an artist's portfolio
 export const getPortfolio = async (req, res) => {
   try {
     const { username } = req.params;
@@ -29,7 +29,7 @@ export const getPortfolio = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
+// Update an artist's portfolio
 export const updatePortfolio = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

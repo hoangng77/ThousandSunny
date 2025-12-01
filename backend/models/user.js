@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Define User schema
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
@@ -18,5 +18,5 @@ const userSchema = new mongoose.Schema({
     count: { type: Number, default: 1 }
   }],  
 }, { timestamps: true });
-
+// Export User model
 export default mongoose.model("User", userSchema);

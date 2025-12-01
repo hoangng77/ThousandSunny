@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider"; 
-
+// Dashboard component displaying different options based on user role
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
-
   if (!user) return <div className="p-8">Loading...</div>;
-
+  // Render dashboard options based on user role
   return (
     <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {user.role === "artist" ? (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getForYou } from "../route/foryou";
-
+// For You Page Component
 export default function ForYou() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,11 +16,11 @@ export default function ForYou() {
       setLoading(false);
     }
   };
-
+  // Fetch "For You" recommendations on component mount
   useEffect(() => {
     loadForYou();
   }, []);
-
+  // Render loading state
   if (loading) return <div className="text-center mt-20">Loading For You…</div>;
 
   if (items.length === 0)
@@ -29,7 +29,7 @@ export default function ForYou() {
         No recommendations yet — add some items to your library!
       </div>
     );
-
+  // Render recommended items grid
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">For You</h1>

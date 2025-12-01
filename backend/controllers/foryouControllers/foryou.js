@@ -1,7 +1,7 @@
 import User from "../../models/user.js";
 import Content from "../../models/content.js";
 import mongoose from "mongoose";
-
+// Get personalized "For You" recommendations
 export const getForYou = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("preferredGenres following");
@@ -16,7 +16,7 @@ export const getForYou = async (req, res) => {
       status: "published",
       genre: { $in: genres },
     };
-
+    // If the user follows artists, prioritize their content
     const artworks = await Content.aggregate([
       { $match: match },
 

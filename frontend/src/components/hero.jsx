@@ -1,6 +1,6 @@
 import React from "react";
 import bannerImage from "../../images/bannerImage.jpg";
-
+// Hero component with background image and overlay text
 export default function Hero() {
   return (
     <section className="relative w-full h-64 bg-gray-200 flex items-center justify-center overflow-hidden rounded-2xl">

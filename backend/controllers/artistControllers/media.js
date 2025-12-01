@@ -1,6 +1,6 @@
 import Content from '../../models/content.js';
 import User from '../../models/user.js';
-
+// Upload single media content
 export const uploadMedia = async (req, res) => {
   try {
     const { title, description, genre } = req.body;
@@ -11,7 +11,7 @@ export const uploadMedia = async (req, res) => {
     if (req.user.role !== 'artist') {
       return res.status(403).json({ message: "Only artists can upload media" });
     }
-
+    // Create new content document
     const media = new Content({
       artist: req.user.id,
       title,
@@ -23,7 +23,7 @@ export const uploadMedia = async (req, res) => {
     });
 
     await media.save();
-
+    // Update user's preferred genres
     if (genre) {
       const user = await User.findById(req.user.id);
       if (user) {
@@ -43,7 +43,7 @@ export const uploadMedia = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
+// Upload serialized content (series episode)
 export const uploadSerializedContent = async (req, res) => {
   try {
     const { title, description, genre, seriesTitle, episodeNumber, seriesId } = req.body;
@@ -57,7 +57,7 @@ export const uploadSerializedContent = async (req, res) => {
     if (!episodeNumber || !seriesTitle || !seriesId) {
       return res.status(400).json({ message: "Series title, episode number, and series ID are required" });
     }
-
+    // Create new content document
     const media = new Content({
       artist: req.user.id,
       title,
@@ -72,7 +72,7 @@ export const uploadSerializedContent = async (req, res) => {
     });
 
     await media.save();
-
+    // Update user's preferred genres
     if (genre) {
       const user = await User.findById(req.user.id);
       if (user) {
@@ -92,7 +92,7 @@ export const uploadSerializedContent = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
+// Get artist's uploaded content progress
 export const getProgress = async (req, res) => {
   try {
     const artistId = req.user.id;
@@ -102,7 +102,7 @@ export const getProgress = async (req, res) => {
     const singles = allContent.filter(item => item.contentType === "single");
 
     const seriesMap = {};
-
+    // Organize series content
     allContent.forEach(item => {
       if (item.contentType === "series") {
         const seriesId = item.seriesId?.toString();
@@ -140,7 +140,7 @@ export const getProgress = async (req, res) => {
     return res.status(500).json({ message: "Server error fetching progress" });
   }
 };
-
+// Get single media content by ID
 export const getMedia = async (req, res) => {
     try {
         const media = await Content.findById(req.params.id).populate("artist", "username profile.avatarUrl");
@@ -154,7 +154,7 @@ export const getMedia = async (req, res) => {
         res.status(500).json({message: "Server error", error: err.message});
     }
 }
-
+// Update media content
 export const updateMedia = async (req, res) => {
     try {
         const media = await Content.findById(req.params.id);
@@ -173,7 +173,7 @@ export const updateMedia = async (req, res) => {
         res.status(500).json({message: "Server error", error: err.message});
     }
 }
-
+// Delete media content
 export const deleteMedia = async (req, res) => {
     try {
         const media = await Content.findById(req.params.id);

@@ -3,7 +3,7 @@ import { AuthContext } from "../context/authProvider";
 import { getProgress, deleteMedia } from "../route/artist";
 import { ProgressCard } from "../components/card.jsx";
 import { useNavigate } from "react-router-dom";
-
+// Progress Page Component
 export default function Progress() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ export default function Progress() {
 
   if (loading) return <div className="p-8">Loading…</div>;
   if (error) return <div className="p-8 text-red-600">{error}</div>;
-
+  // Render progress page
   return (
     <div className="min-h-screen px-6 py-10 bg-gray-50">
       <div className="max-w-6xl mx-auto space-y-12">

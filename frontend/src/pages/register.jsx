@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { registerUser } from "../route/auth";
-
+// Register Page Component
 export default function Register() {
   const [input, setInput] = useState({
     username: "",
@@ -36,7 +36,7 @@ export default function Register() {
         Registration Successful 🎉
       </h1>
     );
-
+ // Render registration form
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
       <form

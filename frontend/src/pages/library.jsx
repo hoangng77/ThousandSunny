@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getLibrary, removeFromLibrary } from "../route/consumer";
 import { Link } from "react-router-dom";
-
+// Library Page Component
 export default function Library() {
   const [library, setLibrary] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  // Fetch library data on component mount
   useEffect(() => {
     let cancelled = false;
 
@@ -25,7 +25,7 @@ export default function Library() {
     loadLibrary();
     return () => (cancelled = true);
   }, []);
-
+  // Handle removing item from library
   const handleRemove = async (contentId) => {
     try {
       await removeFromLibrary(contentId);
@@ -38,7 +38,7 @@ export default function Library() {
       alert("Failed to remove");
     }
   };
-
+  // Render loading, error, empty state, or library items
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
@@ -46,7 +46,7 @@ export default function Library() {
       </div>
     );
   }
-
+  // Render error state
   if (library.length === 0) {
     return (
       <div className="min-h-screen p-8 text-center text-gray-600">
@@ -55,7 +55,7 @@ export default function Library() {
       </div>
     );
   }
-
+  // Render library items grid
   return (
     <div className="min-h-screen p-8 bg-gray-50">
       <h1 className="text-2xl font-semibold mb-4">My Library</h1>

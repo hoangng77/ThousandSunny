@@ -1,6 +1,5 @@
 import React from "react";
-import imageSrc from "../../images/art1.jpg";
-
+// Card component with image, title, and onClick handler
 export function Card({ image, title, onClick }) {
   return (
     <div onClick={onClick} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer">
@@ -9,7 +8,7 @@ export function Card({ image, title, onClick }) {
     </div>
   );
 }
-
+// ProgressCard component with image, title, and genre badges
 export function ProgressCard({ image, title, genre }) {
   return (
     <div className="relative rounded-lg overflow-hidden shadow group">

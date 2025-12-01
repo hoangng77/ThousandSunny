@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getDiscover } from "../route/discover";
 import { addToLibrary, followArtist } from "../route/consumer";
-
+// Discover Page Component
 export default function DiscoverPage() {
   const [artworks, setArtworks] = useState([]);
   const [role, setRole] = useState("consumer");
@@ -11,7 +11,7 @@ export default function DiscoverPage() {
 
   const [search, setSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
-
+  // Fetch discover data from backend
   const fetchDiscover = async () => {
     try {
       const res = await getDiscover();
@@ -48,13 +48,13 @@ export default function DiscoverPage() {
   };
 
   if (loading) return <div className="text-center mt-20">Loading Discover…</div>;
-
+  // Filter artworks based on search and selected genre
   const filteredArtworks = artworks.filter((art) => {
     const matchesGenre = selectedGenre === "all" || art.genre === selectedGenre;
     const matchesSearch = art.title.toLowerCase().includes(search.toLowerCase());
     return matchesGenre && matchesSearch;
   });
-
+  // Get unique genres for filter dropdown
   const genres = [...new Set(artworks.map((art) => art.genre))];
 
   return (

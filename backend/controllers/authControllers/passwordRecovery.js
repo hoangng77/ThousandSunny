@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import User from "../../models/user.js";
-
+// Handle forget password request
 export const forgetPassword = async (req, res) => {
     const { email } = req.body;
     try {
@@ -21,7 +21,7 @@ export const forgetPassword = async (req, res) => {
         res.status(500).json({message: "Servor error", error: err.message});
     }
 };
-
+// Handle reset password request
 export const resetPassword = async (req, res) => {
     const { token } = req.params;
     const { newPassword } = req.body;

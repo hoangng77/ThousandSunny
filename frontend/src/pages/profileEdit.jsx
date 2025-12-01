@@ -2,17 +2,15 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { updateProfile } from "../route/profile";
-
+// Profile Edit Page Component
 export default function ProfileEdit() {
   const { username } = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
 
-  // Hooks
   const [bio, setBio] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-
   // Load form
   useEffect(() => {
     if (user) {
@@ -68,7 +66,6 @@ export default function ProfileEdit() {
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Edit Profile</h1>
 
-      {/* Avatar */}
       <div className="mb-6">
         <label className="block font-medium mb-2">Avatar</label>
         <img
@@ -79,7 +76,6 @@ export default function ProfileEdit() {
         <input type="file" accept="image/*" onChange={handleAvatarChange} />
       </div>
 
-      {/* Bio */}
       <div className="mb-6">
         <label className="block font-medium mb-2">Bio</label>
         <textarea

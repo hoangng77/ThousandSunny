@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateMedia, getMedia } from "../route/artist";
-
+// Media Edit Page Component
 export default function MediaEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  // Form state
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -15,7 +15,7 @@ export default function MediaEdit() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(""); // <-- success message
+  const [success, setSuccess] = useState("");
 
   const genres = [
     "Fantasy",
@@ -90,16 +90,15 @@ export default function MediaEdit() {
   };
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;
-
+  // Render edit form
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-10">
       <h1 className="text-2xl font-bold mb-4">Edit Artwork</h1>
 
       {error && <p className="text-red-600 mb-2">{error}</p>}
-      {success && <p className="text-green-600 mb-2">{success}</p>} {/* success notification */}
+      {success && <p className="text-green-600 mb-2">{success}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Title */}
         <div>
           <label className="block font-medium mb-1">Title</label>
           <input

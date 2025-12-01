@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getFollowing, followArtist, unfollowArtist } from "../route/consumer";
-
+// Following Page Component
 export default function FollowingPage() {
   const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  //  Fetch following artists from backend
   const fetchFollowing = async () => {
     try {
       const res = await getFollowing();
@@ -40,7 +40,7 @@ export default function FollowingPage() {
 
   if (error)
     return <div className="text-center mt-20 text-red-600">Error: {error}</div>;
-
+  // Render following artists or prompt to discover if none
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Following</h1>

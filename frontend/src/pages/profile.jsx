@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { getProfile } from "../route/profile";
 import { Card } from "../components/card";
 import { AuthContext } from "../context/authProvider";
-
+// Profile Page Component
 export default function Profile() {
   const { username } = useParams();
   const { user: currentUser } = useContext(AuthContext);
@@ -12,7 +12,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState(null);
-
+  // Fetch profile data
   useEffect(() => {
     let cancelled = false;
 
@@ -53,7 +53,7 @@ export default function Profile() {
   if (error) return <div className="text-center mt-20 text-red-600">{error}</div>;
 
   const isOwnProfile = currentUser?.username === username;
-
+  // Render profile page
   return (
     <div className="px-6 py-8">
       <section className="bg-white p-8 shadow rounded-lg text-center">

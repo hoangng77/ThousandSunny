@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { useNavigate } from "react-router-dom";
-
+// Navigation bar component
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-
+// Render navigation links based on authentication status
   return (
     <nav className="bg-white shadow p-4 flex justify-between items-center">
       <div className="flex items-center gap-4">

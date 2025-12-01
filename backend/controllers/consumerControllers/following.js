@@ -1,5 +1,5 @@
 import User from "../../models/user.js";
-
+// Get the list of artists the consumer is following
 export const getFollowing = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
@@ -12,7 +12,7 @@ export const getFollowing = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-  
+// Follow an artist
 export const followArtist = async (req, res) => {
   try {
     const { artistId } = req.params;
@@ -34,8 +34,8 @@ export const followArtist = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-  
-  export const unfollowArtist = async (req, res) => {
+// Unfollow an artist
+export const unfollowArtist = async (req, res) => {
   try {
     const { artistId } = req.params;
 

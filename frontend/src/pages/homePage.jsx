@@ -1,7 +1,7 @@
 import React from "react";
 import Hero from "../components/hero";
 import { Link } from "react-router-dom";
-
+// Home Page Component
 export default function Home() {
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -9,7 +9,7 @@ export default function Home() {
     day: "numeric",
     year: "numeric",
   });
-
+  // Render home page with hero section and call-to-action
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Hero />

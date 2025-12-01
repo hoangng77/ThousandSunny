@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { uploadMedia } from "../route/artist";
-
+// Upload Page Component
 export default function Upload() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,7 +15,7 @@ export default function Upload() {
   const [seriesTitle, setSeriesTitle] = useState("");
   const [episodeNumber, setEpisodeNumber] = useState("");
   const [seriesId, setSeriesId] = useState("");
-
+  // Available genres
   const GENRES = [
     "Fantasy","Romance","Horror","Action","Comedy",
     "Drama","Sci-Fi","Mystery","Slice of Life","Adventure",
@@ -71,7 +71,7 @@ export default function Upload() {
       alert("Upload failed");
     }
   };
-
+ // Render upload form
   return (
     <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
       <form

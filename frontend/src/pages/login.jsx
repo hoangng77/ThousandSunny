@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { loginUser } from "../route/auth";
-
+// Login Page Component
 export default function Login() {
   const [input, setInput] = useState({ email: "", password: "" });
   const [status, setStatus] = useState("typing");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-
+  // Handle input field changes
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -45,7 +45,7 @@ export default function Login() {
       </h1>
     );
   }
-
+  // Render login form
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
       <form

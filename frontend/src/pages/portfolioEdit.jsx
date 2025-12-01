@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import { updatePortfolio } from "../route/portfolio";
-
+// Portfolio Edit Page Component
 export default function PortfolioEdit() {
   const { username } = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
-
+  // Form state
   const [bio, setBio] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
@@ -63,7 +63,7 @@ export default function PortfolioEdit() {
       alert("Error updating portfolio.");
     }
   };
-
+  // Render edit form
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Edit Portfolio</h1>
