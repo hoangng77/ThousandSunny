@@ -1,70 +1,97 @@
 import Content from '../../models/content.js';
+import User from '../../models/user.js';
 
 export const uploadMedia = async (req, res) => {
-    try {
-        const { title, description, genre } = req.body;
+  try {
+    const { title, description, genre } = req.body;
 
-        if (!title || !req.file) {
-            return res.status(400).json({ message: "Title and file are required" });
-        }
-        if (req.user.role !== 'artist') {
-            return res.status(403).json({ message: "Only artists can upload media" });
-        }
-
-        const media = new Content({
-            artist: req.user.id,
-            title,
-            description,
-            genre,
-            fileUrl: `/uploads/${req.file.filename}`,
-            status: 'published',
-        });
-        
-        await media.save();
-        res.status(201).json({message: "Media uploaded successfully", media});
-    } catch (err) {
-        console.error("Error in uploadMedia:", err);
-        res.status(500).json({message: "Server error", error: err.message});
+    if (!title || !req.file) {
+      return res.status(400).json({ message: "Title and file are required" });
     }
-}
+    if (req.user.role !== 'artist') {
+      return res.status(403).json({ message: "Only artists can upload media" });
+    }
+
+    const media = new Content({
+      artist: req.user.id,
+      title,
+      description,
+      genre,
+      fileUrl: `/uploads/${req.file.filename}`,
+      status: 'published',
+      contentType: 'single'
+    });
+
+    await media.save();
+
+    if (genre) {
+      const user = await User.findById(req.user.id);
+      if (user) {
+        const existingGenre = user.preferredGenres.find(g => g.genre === genre);
+        if (existingGenre) {
+          existingGenre.count += 1;
+        } else {
+          user.preferredGenres.push({ genre, count: 1 });
+        }
+        await user.save();
+      }
+    }
+
+    res.status(201).json({ message: "Media uploaded successfully", media });
+  } catch (err) {
+    console.error("Error in uploadMedia:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
 
 export const uploadSerializedContent = async (req, res) => {
-    try {
-        const { title, description, genre, seriesTitle, episodeNumber, seriesId } = req.body;
+  try {
+    const { title, description, genre, seriesTitle, episodeNumber, seriesId } = req.body;
 
-        if (!title || !req.file) {
-            return res.status(400).json({ message: "Title and file are required" });
-        }
-        if (req.user.role !== 'artist') {
-            return res.status(403).json({ message: "Only artists can upload media" });
-        }
-        if (!episodeNumber || !seriesTitle) {
-            return res.status(400).json({ message: "Episode number and series title are required" });
-        }
-        if (!seriesId) {
-            return res.status(400).json({ message: "Series ID is required" });
-        }
-
-        const media = new Content({
-            artist: req.user.id,
-            title,
-            description,
-            genre,
-            fileUrl: `/uploads/${req.file.filename}`, // could fix this
-            status: 'published',
-            contentType: 'series',
-            seriesId: seriesId,
-            episodeNumber,
-            seriesTitle,
-        });
-        
-        await media.save();
-        res.status(201).json({message: "Serialized content uploaded successfully", media});
-    } catch (err) {
-        console.error("Error in uploadSerializedContent:", err);
-        res.status(500).json({message: "Server error", error: err.message});
+    if (!title || !req.file) {
+      return res.status(400).json({ message: "Title and file are required" });
     }
-}
+    if (req.user.role !== 'artist') {
+      return res.status(403).json({ message: "Only artists can upload media" });
+    }
+    if (!episodeNumber || !seriesTitle || !seriesId) {
+      return res.status(400).json({ message: "Series title, episode number, and series ID are required" });
+    }
+
+    const media = new Content({
+      artist: req.user.id,
+      title,
+      description,
+      genre,
+      fileUrl: `/uploads/${req.file.filename}`,
+      status: 'published',
+      contentType: 'series',
+      seriesId,
+      episodeNumber,
+      seriesTitle
+    });
+
+    await media.save();
+
+    if (genre) {
+      const user = await User.findById(req.user.id);
+      if (user) {
+        const existingGenre = user.preferredGenres.find(g => g.genre === genre);
+        if (existingGenre) {
+          existingGenre.count += 1;
+        } else {
+          user.preferredGenres.push({ genre, count: 1 });
+        }
+        await user.save();
+      }
+    }
+
+    res.status(201).json({ message: "Serialized content uploaded successfully", media });
+  } catch (err) {
+    console.error("Error in uploadSerializedContent:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
 
 export const getProgress = async (req, res) => {
   try {

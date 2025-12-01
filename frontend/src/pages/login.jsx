@@ -27,7 +27,7 @@ export default function Login() {
       setStatus("success");
     } catch (err) {
       setStatus("typing");
-      setError(err.message);
+      setError(err.response.data.message);
     }
   };
 
