@@ -63,36 +63,36 @@ export default function Library() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {library.map((item) => (
           <div key={item._id} className="bg-white p-4 rounded shadow">
-            
+          <Link to={`/art/${item.content._id}`}>
             <img
               src={`http://localhost:5000${item.content.fileUrl}`}
               alt={item?.content?.title || "Artwork"}
-              className="w-full h-48 object-cover rounded"
+              className="w-full h-48 object-cover rounded cursor-pointer"
             />
-  
-            <p className="mt-2 font-medium text-lg">
-              {item?.content?.title || "Untitled Artwork"}
-            </p>
-  
-            <p className="text-sm text-gray-600">
-              Genre: {item?.content?.genre || "Unknown"}
-            </p>
-  
-            <Link
-              to={`/portfolio/${item.content.artist.username}`}
-              className="text-blue-600 text-sm hover:underline block mt-1"
-            >
-              View Artist
-            </Link>
-
-            <button
-              onClick={() => handleRemove(item.content._id)}
-              className="mt-3 px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Remove
-            </button>
-  
-          </div>
+          </Link>
+        
+          <p className="mt-2 font-medium text-lg">
+            {item?.content?.title || "Untitled Artwork"}
+          </p>
+        
+          <p className="text-sm text-gray-600">
+            Genre: {item?.content?.genre || "Unknown"}
+          </p>
+        
+          <Link
+            to={`/portfolio/${item.content.artist.username}`}
+            className="text-blue-600 text-sm hover:underline block mt-1"
+          >
+            View Artist
+          </Link>
+        
+          <button
+            onClick={() => handleRemove(item.content._id)}
+            className="mt-3 px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Remove
+          </button>
+        </div>        
         ))}
       </div>
     </div>
