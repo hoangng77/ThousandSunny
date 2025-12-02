@@ -14,7 +14,7 @@ export default function Navbar() {
         {user && (
           <>
             <Link to="/discover" className="text-gray-700 hover:text-indigo-600">Discover</Link>
-            <Link to="/foryou" className="text-gray-700 hover:text-indigo-600">For You</Link>
+            <Link to="/for-you" className="text-gray-700 hover:text-indigo-600">For You</Link>
             <Link to="/dashboard" className="text-gray-700 hover:text-indigo-600">Dashboard</Link>
           </>
         )}

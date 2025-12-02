@@ -30,7 +30,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           { /* General Routes */}
           <Route path="/discover" element={<Discover />} />
-          <Route path="/foryou" element={<ForYou />} />
+          <Route path="/for-you" element={<ForYou />} />
           <Route path="/art/:id" element={<ArtPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
            { /* Consumer Routes */}
