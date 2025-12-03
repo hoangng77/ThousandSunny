@@ -5,7 +5,7 @@ export const getPortfolio = async (req, res) => {
   try {
     const { username } = req.params;
 
-    const artist = await User.findOne({ username, role: "artist" }).lean();
+    const artist = await User.findOne({ username: username.toString(), role: "artist" }).lean();
     if (!artist) return res.status(404).json({ message: "Artist not found" });
 
     const media = await Content.find({ artist: artist._id })

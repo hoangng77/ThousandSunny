@@ -14,7 +14,7 @@ export const registerUser = async(req, res) => {
         if (!validator.isEmail(email)) {
           return res.status(400).json({ message: "Invalid email format" });
         }
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: email.toString() });
         if (existingUser) {
           return res.status(400).json({ message: "Email already registered" });
         }
