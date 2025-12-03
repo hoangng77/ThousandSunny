@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         {user ? (
           <>
-            <Link to={user.role === "artist" ? "/portfolio" : `/profile/${user.username}`} className="text-gray-700 hover:text-indigo-600">
+            <Link to={user.role === "artist" ? `/portfolio/${user.username}` : `/profile/${user.username}`} className="text-gray-700 hover:text-indigo-600">
               {user.username}
             </Link>
             <button onClick={() => { logout(); navigate("/"); }} className="text-red-500 hover:underline">Logout</button>
