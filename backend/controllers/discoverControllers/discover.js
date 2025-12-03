@@ -64,7 +64,7 @@ export const getDiscover = async (req, res) => {
           genre: 1,
           contentType: 1,
           episodeNumber: 1,
-          seriesTitle: 1,      // <-- add this
+          seriesTitle: 1,
           seriesId: 1, 
           createdAt: 1,
           "artistInfo._id": 1,
